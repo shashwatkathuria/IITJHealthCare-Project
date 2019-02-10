@@ -7,3 +7,8 @@ def index(request):
 
     # return HttpResponse("Welcome to the Health Centre!")
     return render(request,"HealthCentre/index.html")
+
+def register(request):
+
+    # return HttpResponse("Welcome to the Health Centre!")
+    return render(request,"HealthCentre/register.html")
