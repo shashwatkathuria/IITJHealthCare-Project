@@ -20,3 +20,9 @@ def doctors(request):
         "doctors" : Doctor.objects.all()
     }
     return render(request,"HealthCentre/doctors.html",context)
+
+def login(request):
+    return render(request,"HealthCentre/login.html")
+
+def emergency(request):
+    return render(request,"HealthCentre/emergency.html")
