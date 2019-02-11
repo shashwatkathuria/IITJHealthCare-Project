@@ -21,9 +21,10 @@
     </style>
 
   </head>
-  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}">
+  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#"><h1 style="color:grey;text-align:center">IIT Jodhpur Health Centre</h1></a>
+      <a class="navbar-brand" href="/"><h1 style="color:grey;text-align:center">IIT Jodhpur Health Centre</h1></a>
+      <img src="{% static 'HealthCentre/images/jdh10.png' %}" style="width:5%;height:5%">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,7 +32,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Login</a>
@@ -42,7 +43,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">Medicine Store</a>
-              <a class="dropdown-item" href="#">Doctors</a>
+              <a class="dropdown-item" href="/doctors">Doctors</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Contact Us</a>
             </div>
