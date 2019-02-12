@@ -15,7 +15,9 @@ class Patient(models.Model):
     name = models.CharField(max_length = 30)
     address = models.CharField(max_length = 100)
     contactNumber = models.CharField(max_length = 10)
+    rollNumber = models.CharField(max_length = 8)
     email = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 64)
 
     def __str__(self):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email
