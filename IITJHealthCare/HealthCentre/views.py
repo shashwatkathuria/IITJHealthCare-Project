@@ -57,15 +57,61 @@ def doctors(request):
 
 def login(request):
     if request.method == "GET":
-        return render(request,"HealthCentre/login.html")
+        try:
+            if request.session['isLoggedIn']:
+                patient = Patient.objects.get(email = request.session['userEmail'])
+                context = {
+                    "message" : "Successfully Logged In.",
+                    "isAuthenticated" : True,
+                    "user": patient.patientRecords.all()
+                    }
+                return render(request,"HealthCentre/userPatientInfo.html", context)
+            else:
+                return render(request,"HealthCentre/login.html")
+        except:
+            return render(request,"HealthCentre/login.html", context)
     elif request.method == "POST":
-        # username = request.POST["useremail"]
-        # password = request.POST["userpassword"]
-        # patient = Patient.objects.get(email = useremail)
+        userName = request.POST["useremail"]
+        userPassword = request.POST["userpassword"]
+        try:
+            patient = Patient.objects.get(email = userName)
+        except Patient.DoesNotExist:
+            context = {
+                "message":"User does not exist.Please register first."
+            }
+            return render(request,"HealthCentre/login.html", context)
 
-        return HttpResponseRedirect(reverse("index"))
+        SHA256Engine = SHA256.new()
+        userPassword = userPassword.encode()
+        SHA256Engine.update(userPassword)
+        passwordHash = SHA256Engine.digest()
+        passwordHash = encode(passwordHash, 'hex')
+        passwordHash = decode(passwordHash, 'utf-8')
+        if passwordHash == patient.password:
+            context = {
+                "message" : "Successfully Logged In.",
+                "isAuthenticated" : True,
+                "user": patient.patientRecords.all()
+            }
+            request.session['isLoggedIn'] = True
+            request.session['userEmail'] = userName
+            return render(request,"HealthCentre/userPatientInfo.html", context)
+        context = {
+            "message":"Invalid Credentials.Please Try Again."
+        }
+        return render(request,"HealthCentre/login.html", context)
+
+
     else:
         return render(request,"HealthCentre/login.html")
 
 def emergency(request):
     return render(request,"HealthCentre/emergency.html")
+
+def logout(request):
+    request.session['isLoggedIn'] = False
+    request.session['userEmail'] = ""
+    context = {
+        "message":"Successfully Logged Out."
+    }
+    return HttpResponseRedirect(reverse('login'))
