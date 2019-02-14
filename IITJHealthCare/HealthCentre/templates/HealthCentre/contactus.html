@@ -1,0 +1,45 @@
+{% extends "HealthCentre/layout.html" %}
+
+{% block title %}
+IITJ Health Centre
+{% endblock %}
+
+{% block bodytag %}
+
+  {% load static %}
+  <body background="{% static 'HealthCentre/images/jdh14.jpg' %}" style="background-size: 100% auto;">
+
+{% endblock %}
+
+{% block body %}
+    <br>
+
+    <div class="jumbotron jumbotron-fluid" style = "margin-left:5%;margin-right:5%;background:rgba(0,0,0,0.3);color:white;">
+      <div class="container">
+
+        <h1 >Address</h1>
+        <p class="lead">Opposite Faculty Residential Building, IIT Jodhpur, Karwar, Jodhpur,Rajasthan</p>
+        <a href="#" class="btn btn-info">Pin Code : 342037</a>
+
+        <br>
+        <br>
+
+        <h1>Email</h1>
+          <p class="lead">Suggestions and feedback are thoroughly welcomed.</p>
+          <a href="#" class="btn btn-info">healthcentre@iitj.ac.in</a>
+
+        <br>
+        <br>
+
+        <h1 >Reception Contact Numbers</h1>
+        <p class="lead">Please feel free to call us anytime. 24 x 7 Helpline Availability.</p>
+        <a href="#" class="btn btn-info">Contact Numbers : 0141-3562834, 0141-35682104</a>
+
+      </div>
+    </div>
+
+
+
+
+
+{% endblock %}
