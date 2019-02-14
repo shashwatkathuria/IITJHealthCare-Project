@@ -19,13 +19,21 @@ IITJ Health Centre
         NO LOGIN REQUIRED
       </p>
     </h1>
-    <br>
+
+    {% if message %}
+      <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
+        {{ message }}
+      </div>
+    {% endif %}
+
+
     <hr>
     <div class="container center_div" align ="center" width="300px">
-      <form align="center">
+      <form align="center" action = "{% url 'emergency' %}" method = "post">
+      {% csrf_token %}
       <br>
       <div class="form-group">
-        <select class="form-control" id="exampleFormControlSelect1">
+        <select class="form-control" name="emergencyLocation">
           <option>B1 Hostel</option>
           <option>B2 Hostel</option>
           <option>B3 Hostel</option>
@@ -53,13 +61,14 @@ IITJ Health Centre
     </div>
     <hr>
     <div class="container center_div" align ="center" width="300px">
-      <form align="center">
+      <form align="center" action = "{% url 'emergency' %}" method = "post">
+        {% csrf_token %}
       <br>
       <div class="form-group">
         <br>
         <div class="form-row">
           <div class="col-12">
-            <input type="text" class="form-control" placeholder="Otherwise type location here.">
+            <input name="emergencyLocation" type="text" class="form-control" placeholder="Otherwise type location here.">
           </div>
         </div>
         <br>
@@ -69,5 +78,7 @@ IITJ Health Centre
     </form>
     </div>
     <hr>
+    <br>
+
 
 {% endblock %}
