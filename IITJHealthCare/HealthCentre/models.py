@@ -27,6 +27,7 @@ class Prescription(models.Model):
     doctor = models.ForeignKey(Doctor, related_name = "doctorRecords", on_delete = models.CASCADE)
     patient = models.ForeignKey(Patient, related_name = "patientRecords", on_delete = models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add = True)
+    isNew = models.BooleanField(default = True)
 
     def __str__(self):
         return "\nDoctor :" + str(self.doctor) + "\n\nPatient :" + str(self.patient) + "\n\nPrescription : \n\n" + self.prescriptionText + "\n\n"
