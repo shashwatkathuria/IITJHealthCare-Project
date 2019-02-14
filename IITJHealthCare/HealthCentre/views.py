@@ -74,7 +74,7 @@ def login(request):
                 patient = Patient.objects.get(email = request.session['userEmail'])
 
                 records = patient.patientRecords.all()
-                numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(new = True)))['newPrescriptions']
+                numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(isNew = True)))['newPrescriptions']
                 request.session['numberNewPrescriptions'] = numberNewPrescriptions
                 for record in records:
                     record.new = False
@@ -90,7 +90,7 @@ def login(request):
             else:
                 return render(request,"HealthCentre/login.html")
         except:
-            return render(request,"HealthCentre/login.html", context)
+            return render(request,"HealthCentre/login.html")
 
     elif request.method == "POST":
 
@@ -114,7 +114,7 @@ def login(request):
         passwordHash = decode(passwordHash, 'utf-8')
 
         records = patient.patientRecords.all()
-        numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(new = True)))['newPrescriptions']
+        numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(isNew = True)))['newPrescriptions']
         request.session['numberNewPrescriptions'] = numberNewPrescriptions
         for record in records:
             record.new = False
