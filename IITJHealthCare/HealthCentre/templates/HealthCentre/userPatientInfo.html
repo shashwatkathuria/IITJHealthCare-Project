@@ -12,9 +12,11 @@ IITJ Health Centre
 {% block body %}
     <a class="btn btn-warning btn-lg" href="{% url 'logout' %}" role="button" style = "margin-left:5px;margin-top:5px;">LOGOUT</a>
     <br>
+
     <h1 style="text-align:center;color:white" class = "display-4">
       YOUR PRESCRIPTIONS
     </h1>
+
     <br><br><br>
     {% for prescription in user %}
         <div class="card text-center" style = "margin-left:5%;margin-right:5%;">
