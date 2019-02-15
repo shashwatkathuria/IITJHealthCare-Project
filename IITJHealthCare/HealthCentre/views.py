@@ -77,7 +77,7 @@ def login(request):
                 numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(isNew = True)))['newPrescriptions']
                 request.session['numberNewPrescriptions'] = numberNewPrescriptions
                 for record in records:
-                    record.new = False
+                    record.isNew = False
                     record.save()
 
                 context = {
@@ -117,7 +117,7 @@ def login(request):
         numberNewPrescriptions = patient.patientRecords.aggregate(newPrescriptions = Count('pk', filter = Q(isNew = True)))['newPrescriptions']
         request.session['numberNewPrescriptions'] = numberNewPrescriptions
         for record in records:
-            record.new = False
+            record.isNew = False
             record.save()
 
         if passwordHash == patient.password:
