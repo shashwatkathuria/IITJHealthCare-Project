@@ -16,7 +16,7 @@ IITJ Health Centre
     <h1 style="text-align:center;color:white" class = "display-4">
       YOUR PRESCRIPTIONS
     </h1>
-
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
     <br><br><br>
     {% for prescription in user %}
         <div class="card text-center" style = "margin-left:5%;margin-right:5%;">
@@ -25,10 +25,10 @@ IITJ Health Centre
           </div>
           <div class="card-body">
             <h1 class="card-title" > Dr. {{ prescription.doctor.name }} </h1>
-            <p class="card-text lead" style=""><br>{{ prescription.prescriptionText }}<br><br></p>
-            <a href="#" class="btn btn-primary">Contact Number : {{ prescription.doctor.contactNumber }}</a>
-            <a href="#" class="btn btn-primary">Email : {{ prescription.doctor.email }}</a>
-            <a href="#" class="btn btn-primary">Address : {{ prescription.doctor.address }}</a>
+            <p class="card-text lead" style=""><br>{{ prescription.prescriptionText }}<br></p>
+            <a href="#" class="btn btn-primary"style = "margin-top:1%">Contact Number : {{ prescription.doctor.contactNumber }}</a>
+            <a href="#" class="btn btn-primary"style = "margin-top:1%">Email : {{ prescription.doctor.email }}</a>
+            <a href="#" class="btn btn-primary"style = "margin-top:1%">Address : {{ prescription.doctor.address }}</a>
           </div>
           <div class="card-footer text-muted">
             {{ prescription.timestamp }}

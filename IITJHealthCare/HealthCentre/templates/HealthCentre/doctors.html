@@ -11,16 +11,18 @@ IITJ Health Centre
 
 {% block body %}
     <br>
-    <h1 style="text-align:center;color:white" class = "display-4">
+    <h1 style="text-align:center;color:white;" class = "display-4">
       AVAILABLE DOCTORS
     </h1>
-    <br><br><br>
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+    <br><br>
     {% for doctor in doctors %}
         <div class="row container"style="margin: 0 auto;" >
           <div class="col-sm-12">
-            <div class="card">
+            <div class="card"style = "background:rgba(0,0,0,0.8);color:white;">
               <div class="card-body">
                 <h5 class="card-title">Dr. {{ doctor.name }}</h5>
+                <li class="dropdown-divider"></li>
                 <p class="card-text">Address : {{ doctor.address }}<br> Email : {{ doctor.email }}</p>
                 <a href="#" class="btn btn-primary">Contact Number : {{ doctor.contactNumber }}</a>
               </div>

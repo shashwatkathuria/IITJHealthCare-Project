@@ -1,8 +1,10 @@
 {% extends "HealthCentre/layout.html" %}
 
+
 {% block title %}
-IITJ Health Centre
+  IITJ Health Centre
 {% endblock %}
+
 
 {% block style %}
 
@@ -15,113 +17,125 @@ IITJ Health Centre
 
 {% endblock %}
 
+
 {% block bodytag %}
 
-  {% load static %}
-  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+    {% load static %}
+    <body background="{% static 'HealthCentre/images/jdh14.jpg' %}" style="background-size: 100% auto;">
 
 {% endblock %}
+
 
 {% block body %}
 
     <div style="text-align:center;margin: 0 auto;"class="alert alert-danger" role="alert">
-      Swine Flu Outbreak in Jodhpur!! Get a precautionary checkup immediately!!
+        Swine Flu Outbreak in Jodhpur!! Get a precautionary checkup immediately!!
     </div>
 
     <div style="background-color:#eae8b2" id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="{% static 'HealthCentre/images/jdh2.jpg' %}" class="d-block w-100 " alt="Mehrangarh Fort Jodhpur" >
-          <div class="carousel-caption d-none d-md-block ">
-            <h5>Welcome To IIT Jodhpur Health Centre</h5>
-            <p>Good health and good sense are two of life's greatest blessings.</p>
-          </div>
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'HealthCentre/images/jdh2.jpg' %}" class="d-block w-100 " alt="Mehrangarh Fort Jodhpur" >
+                <div class="carousel-caption d-none d-md-block ">
+                    <h5>Welcome To IIT Jodhpur Health Centre</h5>
+                    <p>Good health and good sense are two of life's greatest blessings.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'HealthCentre/images/jdh6.jpg' %}" class="d-block w-100 " alt="IIT Jodhpur Wall" >
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>To enjoy the glow of good health, you must exercise - Gene Tunney</h5>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'HealthCentre/images/jdh7.jpg' %}" class="d-block w-100 " alt="IIT Jodhpur Main Gate" >
+            </div>
         </div>
-        <div class="carousel-item">
-          <img src="{% static 'HealthCentre/images/jdh6.jpg' %}" class="d-block w-100 " alt="IIT Jodhpur Wall" >
-          <div class="carousel-caption d-none d-md-block">
-            <h5>To enjoy the glow of good health, you must exercise - Gene Tunney</h5>
-          </div>
-        </div>
-        <div class="carousel-item">
-          <img src="{% static 'HealthCentre/images/jdh7.jpg' %}" class="d-block w-100 " alt="IIT Jodhpur Main Gate" >
-        </div>
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 
     <div class="jumbotron" style="margin: 0 auto;">
-      <h1 class="display-4">Hey there! Haven't registered yet?!</h1>
-      <p class="lead">Register yourself today and get access to all the benefits of the Health Centre!</p>
-      <hr class="my-4">
-      <p>You must be a member of IIT Jodhpur to have access to this facility.</p>
-      <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+        <h1 class="display-4">Hey there! Haven't registered yet?!</h1>
+        <p class="lead">Register yourself today and get access to all the benefits of the Health Centre!</p>
+        <hr class="my-4">
+        <p>You must be a member of IIT Jodhpur to have access to this facility.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
     </div>
 
-    <div >
-      <hr class="my-4" >
-      <h1 class ="display-3"style="text-align:center;color:white">BENEFITS</h1>
-      <hr class="my-4" >
-      <div class="row"style="margin: 0 auto;" >
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Medical Store </h5>
-              <p class="card-text">Avail benefits of online medical store!</p>
-              <a href="#" class="btn btn-primary">MEDICAL STORE</a>
+    <div>
+        <hr class="my-4" >
+        <h1 class ="display-3"style="text-align:center;color:white">BENEFITS</h1>
+        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+        <div class="row"style="margin: 0 auto;" >
+
+            <div class="col-sm-6" style = "margin-top:2%">
+                <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Medical Store </h5>
+                      <li class="dropdown-divider" style="margin-right:15%"></li>
+                      <p class="card-text">Avail benefits of online medical store!</p>
+                      <a href="#" class="btn btn-primary">MEDICAL STORE</a>
+                  </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Emergency Ambulance</h5>
-              <p class="card-text">Get immediate ambulance in emergency situation.</p>
-              <a href="{% url 'emergency' %}" class="btn btn-primary">EMERGENCY</a>
+
+            <div class="col-sm-6" style="margin-top:2%">
+                <div class="card">
+                  <div class="card-body">
+                      <h5 class="card-title">Emergency Ambulance</h5>
+                      <li class="dropdown-divider" style="margin-right:15%"></li>
+                      <p class="card-text">Get immediate ambulance in emergency situation.</p>
+                      <a href="{% url 'emergency' %}" class="btn btn-primary">EMERGENCY</a>
+                  </div>
+                </div>
             </div>
-          </div>
-        </div>
+
       </div>
-      <br>
-      <div class="row"style="margin: 0 auto;" >
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Online Prescription</h5>
-              <p class="card-text">Get online hassle-free prescription from doctor.</p>
-              <a href="#" class="btn btn-primary">ONLINE PRESCRIPTION</a>
+
+        <div class="row"style="margin: 0 auto;" >
+
+            <div class="col-sm-6" style ="margin-top:2%">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Online Prescription</h5>
+                        <li class="dropdown-divider" style="margin-right:15%"></li>
+                        <p class="card-text">Get online hassle-free prescription from doctor.</p>
+                        <a href="#" class="btn btn-primary">ONLINE PRESCRIPTION</a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Contact Us</h5>
-              <p class="card-text">24 x 7 Help Line Availability.</p>
-              <a href="#" class="btn btn-primary">CONTACT US</a>
+
+            <div class="col-sm-6" style="margin-top:2%">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Contact Us</h5>
+                        <li class="dropdown-divider" style="margin-right:15%"></li>
+                        <p class="card-text">24 x 7 Help Line Availability.</p>
+                        <a href="{% url 'contactus' %}" class="btn btn-primary">CONTACT US</a>
+                    </div>
+                </div>
             </div>
-          </div>
+
         </div>
-      </div>
     </div>
 
     <div id="Footer">
         <h6 style="text-align:center;color:black;background-color:#dddddd;margin: 0 auto;">
-          <hr class="my-4"style="margin: 0 auto;" >
-                ©2019 All Rights Reserved, IIT Jodhpur<br>
-              <!-- ________________________________________________________ --><br>
+            <hr class="my-4"style="margin: 0 auto;" >
+                ©2019 All Rights Reserved, IIT Jodhpur<br><br>
         </h6>
     <div>
 

@@ -35,7 +35,7 @@
           </li>
           {% if request.session.isLoggedIn %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Your Prescriptions <span class="badge badge-primary badge-pill">{{ request.session.numberNewPrescriptions }}</span></a>
+              <a class="nav-link" href="{% url 'login' %}">Your Prescriptions <span class="badge badge-primary badge-pill">{{ request.session.numberNewPrescriptions }} NEW</span></a>
             </li>
           {% else %}
             <li class="nav-item">
@@ -48,6 +48,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">Medicine Store</a>
+              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'doctors' %}">Doctors</a>
               <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'contactus' %}">Contact Us</a>

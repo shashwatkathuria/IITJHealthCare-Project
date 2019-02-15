@@ -14,8 +14,9 @@ IITJ Health Centre
     <h1 style="text-align:center;color:white" class = "display-4">
       REGISTRATION DETAILS
     </h1>
-    <br><br><br>
-    <div class="container center_div" align ="center" width="300px">
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+    <br><br>
+    <div class="container center_div"style = "background:rgba(0,0,0,0.2);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
       <form align="center" action="{% url 'register' %}" method="post">
         {% csrf_token %}
         <div class="form-row ">
@@ -53,6 +54,8 @@ IITJ Health Centre
           <input name="userConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
         </div>
       </div>
+      <br>
+      <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
