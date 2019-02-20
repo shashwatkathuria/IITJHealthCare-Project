@@ -1,0 +1,109 @@
+{% extends "HealthCentre/layout.html" %}
+
+{% block title %}
+IITJ Health Centre
+{% endblock%}
+
+{% block bodytag %}
+
+    {% load static %}
+    <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+
+{% endblock %}
+
+{% block body %}
+    <a class="btn btn-warning btn-lg" href="{% url 'logout' %}" role="button" style = "margin-left:5px;margin-top:5px;">LOGOUT</a>
+
+    <br>
+
+    <h1 style="text-align:center;color:white" class = "display-4">
+      YOUR PRESCRIPTIONS
+    </h1>
+
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+    <br>
+    <br>
+    <br>
+
+    {% if successPrescriptionMessage %}
+        <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
+            {{ successPrescriptionMessage }}
+        </div>
+    {% endif %}
+
+    <br>
+
+    {% for prescription in user %}
+        {% if not prescription.isCompleted %}
+            <form action="{% url 'onlineprescription' %}" method = "post">
+                {% csrf_token %}
+                <div class="card text-center" style = "margin-left:5%;margin-right:5%;">
+
+                    <div class="card-header">Prescription</div>
+
+                    <div class="card-body">
+
+                        <h1 class="card-title" >
+                            {{ prescription.patient.name }}
+                        </h1>
+
+                        <div class="card-text lead">
+
+                            <br>
+
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Please type the prescription.</label>
+                                <textarea name = "prescription"style="text-align:center" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Prescription"></textarea>
+                                <input type="hidden" name="prescriptionID" value="{{ prescription.id }}">
+                            </div>
+
+                            <br>
+                            <br>
+
+                            <span><h3>Patient's Symptoms</h3></span>
+
+                            {{ prescription.symptoms }}
+
+                        </div>
+
+                        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning" style = "margin-left:10%;margin-right:10%"">Submit Patient Prescription</button><br>
+
+                        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+                        <a href="#" class="btn btn-primary"style = "margin-top:1%">Contact Number : {{ prescription.patient.contactNumber }}</a>
+                        <a href="#" class="btn btn-primary"style = "margin-top:1%">Email : {{ prescription.patient.email }}</a>
+                        <a href="#" class="btn btn-primary"style = "margin-top:1%">Address : {{ prescription.patient.address }}</a>
+
+                    </div>
+
+                    <div class="card-footer text-muted">
+                        {{ prescription.timestamp }}
+                    </div>
+                </div>
+
+              </form>
+
+          <br>
+
+        {% endif %}
+
+    {% empty %}
+
+        <h1 style="text-align:center;color:white" >
+            You have no prescriptions right now.
+        </h1>
+
+    {% endfor %}
+
+    <br>
+    <br>
+
+{% endblock %}
