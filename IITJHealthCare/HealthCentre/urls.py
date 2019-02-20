@@ -9,5 +9,6 @@ urlpatterns = [
     path('login', views.login, name = "login"),
     path('emergency', views.emergency, name = "emergency"),
     path('logout', views.logout, name = "logout"),
-    path('contactus', views.contactus, name = "contactus")
+    path('contactus', views.contactus, name = "contactus"),
+    path('onlineprescription', views.onlineprescription, name = "onlineprescription")
 ]
