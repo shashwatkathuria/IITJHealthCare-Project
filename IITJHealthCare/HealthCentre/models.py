@@ -7,9 +7,11 @@ class Doctor(models.Model):
     address = models.CharField(max_length = 100)
     contactNumber = models.CharField(unique = True, max_length = 10)
     email = models.EmailField(unique = True, max_length = 255)
+    specialization = models.CharField(max_length = 100)
+    password = models.CharField(max_length = 64)
 
     def __str__(self):
-        return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email
+        return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email + " Specialization : " + self.specialization
 
 class Patient(models.Model):
     name = models.CharField(max_length = 30)
@@ -23,11 +25,14 @@ class Patient(models.Model):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email
 
 class Prescription(models.Model):
-    prescriptionText = models.CharField(max_length = 2000)
+    prescriptionText = models.CharField(max_length = 2000, default = "")
     doctor = models.ForeignKey(Doctor, related_name = "doctorRecords", on_delete = models.CASCADE)
     patient = models.ForeignKey(Patient, related_name = "patientRecords", on_delete = models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add = True)
     isNew = models.BooleanField(default = True)
+    isCompleted = models.BooleanField(default = False)
+    symptoms = models.CharField(max_length = 2000)
+
 
     def __str__(self):
         return "\nDoctor :" + str(self.doctor) + "\n\nPatient :" + str(self.patient) + "\n\nPrescription : \n\n" + self.prescriptionText + "\n\n"
