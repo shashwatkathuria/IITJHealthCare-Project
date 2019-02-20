@@ -1,0 +1,63 @@
+{% extends "HealthCentre/layout.html" %}
+
+{% block title %}
+IITJ Health Centre
+{% endblock%}
+
+{% block bodytag %}
+
+  {% load static %}
+  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+
+{% endblock %}
+
+{% block body %}
+
+    <a class="btn btn-warning btn-lg" href="{% url 'logout' %}" role="button" style = "margin-left:5px;margin-top:5px;">LOGOUT</a>
+
+    <br>
+
+    <h1 style="text-align:center;color:white" class = "display-4">
+      YOUR PRESCRIPTIONS
+    </h1>
+
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+    <br>
+    <br>
+    <br>
+
+    {% for prescription in user %}
+        {% if prescription.isCompleted %}
+            <div class="card text-center" style = "margin-left:5%;margin-right:5%;">
+
+                <div class="card-header">
+                    Prescription
+                </div>
+
+                <div class="card-body">
+                    <h1 class="card-title" > Dr. {{ prescription.doctor.name }} </h1>
+                    <p class="card-text lead" style=""><br>{{ prescription.prescriptionText }}<br><br> <span><h3>Your Symptoms</h3></span> {{ prescription.symptoms }}</p>
+                    <a href="#" class="btn btn-primary"style = "margin-top:1%">Contact Number : {{ prescription.doctor.contactNumber }}</a>
+                    <a href="#" class="btn btn-primary"style = "margin-top:1%">Email : {{ prescription.doctor.email }}</a>
+                    <a href="#" class="btn btn-primary"style = "margin-top:1%">Address : {{ prescription.doctor.address }}</a>
+                </div>
+
+                <div class="card-footer text-muted">
+                    {{ prescription.timestamp }}
+                </div>
+
+            </div>
+
+            <br>
+        {% endif %}
+
+    {% empty %}
+
+        <h1 style="text-align:center;color:white" >
+          You have no prescriptions right now.
+        </h1>
+
+    {% endfor %}
+
+{% endblock %}
