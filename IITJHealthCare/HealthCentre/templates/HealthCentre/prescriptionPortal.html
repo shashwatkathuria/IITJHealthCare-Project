@@ -30,7 +30,8 @@ IITJ Health Centre
             </div>
     {% endif %}
 
-    {% if request.session.isLoggedIn %}
+    {% if request.session.isLoggedIn  %}
+      {% if not request.session.isDoctor %}
 
           <br>
           <br>
@@ -72,6 +73,8 @@ IITJ Health Centre
               </form>
 
           </div>
+
+      {% endif %}
     {% endif %}
 
     <br>
