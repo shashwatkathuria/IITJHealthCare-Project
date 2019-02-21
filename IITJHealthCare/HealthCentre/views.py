@@ -247,11 +247,17 @@ def contactus(request):
 def onlineprescription(request):
     if request.method == "GET":
         if request.session['isLoggedIn']:
-
-            context = {
-                "doctors" : Doctor.objects.all().order_by('specialization')
-            }
-            return render(request, "HealthCentre/prescriptionPortal.html", context)
+            if request.session['isDoctor']:
+                context = {
+                        "message":"Only for patients."
+                }
+                print("Hello")
+                return render(request, "HealthCentre/prescriptionPortal.html", context)
+            else:
+                context = {
+                    "doctors" : Doctor.objects.all().order_by('specialization')
+                }
+                return render(request, "HealthCentre/prescriptionPortal.html", context)
         else:
             context = {
                     "message":"Please Login First."
