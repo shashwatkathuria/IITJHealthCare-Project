@@ -1,0 +1,53 @@
+{% extends "MedicalStore/layout.html" %}
+
+{% block title %}
+IITJ Health Centre
+{% endblock%}
+
+{% block bodytag %}
+
+  {% load static %}
+  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+
+{% endblock %}
+
+{% block body %}
+
+    <br>
+
+    <h1 style="text-align:center;color:white;" class = "display-4">
+      MEDICAL STORE
+    </h1>
+
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+
+    <br>
+    <br>
+
+    {% for medicine in medicines %}
+        <div class="row container"style="margin: 0 auto;" >
+            <div class="col-sm-12">
+                <div class="card"style = "background:rgba(0,0,0,0.8);color:white;">
+                    <div class="card-body">
+
+                        <h5 class="card-title"> {{ medicine.name }}</h5>
+                        <li class="dropdown-divider"></li>
+                        <p class="card-text"><pre style="color:white">Company             : {{ medicine.company }}<br>Manufacturing Date  : {{ medicine.manufacturedDate }}<br>Expiry Date         : {{ medicine.expiryDate }}<br>Quantity Remaining  : {{ medicine.quantity }}</pre></p>
+                        <a href="#" class="btn btn-primary">Price : &#8377;{{ medicine.price }}</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+    {% empty %}
+
+        <h1 style="text-align:center;color:white" >
+            Sorry! No doctors available right now. Please try again later!
+        </h1>
+
+    {% endfor %}
+
+{% endblock %}
