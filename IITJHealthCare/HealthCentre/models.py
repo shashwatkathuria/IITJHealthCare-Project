@@ -9,6 +9,7 @@ class Doctor(models.Model):
     email = models.EmailField(unique = True, max_length = 255)
     specialization = models.CharField(max_length = 100)
     password = models.CharField(max_length = 64)
+    emailHash = models.CharField(max_length = 64, default="")
 
     def __str__(self):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email + " Specialization : " + self.specialization
@@ -20,6 +21,7 @@ class Patient(models.Model):
     rollNumber = models.CharField(unique = True, max_length = 8)
     email = models.EmailField(unique = True, max_length = 255)
     password = models.CharField(max_length = 64)
+    emailHash = models.CharField(max_length = 64, default="")
 
     def __str__(self):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email
