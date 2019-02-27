@@ -10,14 +10,23 @@ from django.db.models import Count, Q
 # Create your views here.
 
 def index(request):
-    return render(request,"HealthCentre/index.html")
+
+    response = render(request,"HealthCentre/index.html")
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 
 def register(request):
 
     if request.method == "GET":
 
-        return render(request,"HealthCentre/registrationPortal.html")
+        response =  render(request,"HealthCentre/registrationPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
 
     elif request.method == "POST":
 
@@ -41,23 +50,42 @@ def register(request):
             passwordHash = encode(passwordHash, 'hex')
             passwordHash = decode(passwordHash, 'utf-8')
 
-            patient = Patient(name = name,rollNumber = userRollNo, email = userEmail, password = passwordHash, address = userAddress, contactNumber = userContactNo )
+            SHA256Engine = SHA256.new()
+            userEmail = userEmail.encode()
+            SHA256Engine.update(userEmail)
+            emailHash = SHA256Engine.digest()
+            emailHash = encode(emailHash, 'hex')
+            emailHash = decode(emailHash, 'utf-8')
+
+            patient = Patient(name = name,rollNumber = userRollNo, email = userEmail, password = passwordHash, address = userAddress, contactNumber = userContactNo, emailHash = emailHash )
             patient.save()
 
             context = {
                 "message":"User Registration Successful. Please Login."
             }
 
-            return render(request, "HealthCentre/registrationPortal.html",context)
+            response = render(request, "HealthCentre/registrationPortal.html",context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
         else:
             context = {
                 "message":"Passwords do not match.Please register again."
             }
 
-            return render(request,"HealthCentre/registrationPortal.html",context)
+            response = render(request,"HealthCentre/registrationPortal.html",context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
     else:
-        return render(request,"HealthCentre/registrationPortal.html")
+        response = render(request,"HealthCentre/registrationPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
 
 
 def doctors(request):
@@ -65,14 +93,18 @@ def doctors(request):
     context = {
         "doctors" : Doctor.objects.all()
     }
-    return render(request,"HealthCentre/doctors.html",context)
+    response = render(request,"HealthCentre/doctors.html",context)
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 
 def login(request):
     if request.method == "GET":
         try:
             if request.session['isLoggedIn'] and request.session['isDoctor']:
-                doctor = Doctor.objects.get(email = request.session['userEmail'])
+                doctor = Doctor.objects.get(emailHash = request.session['userEmail'])
                 records = doctor.doctorRecords.all()
                 numberNewPendingPrescriptions = doctor.doctorRecords.aggregate(newPendingPrescriptions = Count('pk', filter =( Q(isNew = True) & Q(isCompleted = False) ) ))['newPendingPrescriptions']
                 request.session['numberNewPrescriptions'] = numberNewPendingPrescriptions
@@ -84,11 +116,15 @@ def login(request):
                     "user": records.order_by('-timestamp')
                 }
 
-                return render(request,"HealthCentre/userDoctorProfilePortal.html", context)
+                response = HttpResponseRedirect(reverse('index'))
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
             elif request.session['isLoggedIn'] and (not request.session['isDoctor']):
 
-                patient = Patient.objects.get(email = request.session['userEmail'])
+                patient = Patient.objects.get(emailHash = request.session['userEmail'])
 
                 records = patient.patientRecords.all()
                 numberNewPrescriptions = patient.patientRecords.aggregate(newCompletedPrescriptions = Count('pk', filter =( Q(isNew = True) & Q(isCompleted = True) ) ) )['newCompletedPrescriptions']
@@ -104,20 +140,32 @@ def login(request):
                     "user": records.order_by('-timestamp')
                     }
 
-                return render(request,"HealthCentre/userPatientProfilePortal.html", context)
+                response = render(request,"HealthCentre/userPatientProfilePortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
             else:
-                return render(request,"HealthCentre/loginPortal.html")
+                response = render(request,"HealthCentre/loginPortal.html")
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
         except:
-            return render(request,"HealthCentre/loginPortal.html")
+            response = render(request,"HealthCentre/loginPortal.html")
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
     elif request.method == "POST":
-
         userName = request.POST["useremail"]
         userPassword = request.POST["userpassword"]
 
 
         try:
             patient = Patient.objects.get(email = userName)
+            request.session['isDoctor'] = False
 
         except Patient.DoesNotExist:
             try:
@@ -127,7 +175,11 @@ def login(request):
                 context = {
                     "message":"User does not exist.Please register first."
                 }
-                return render(request,"HealthCentre/loginPortal.html", context)
+                response = render(request,"HealthCentre/loginPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
         SHA256Engine = SHA256.new()
         userPassword = userPassword.encode()
@@ -149,17 +201,25 @@ def login(request):
                     "user": records.order_by('-timestamp')
                 }
                 request.session['isLoggedIn'] = True
-                request.session['userEmail'] = userName
+                request.session['userEmail'] = doctor.emailHash
                 request.session['Name'] = doctor.name
 
-                return render(request,"HealthCentre/userDoctorProfilePortal.html", context)
+                response = HttpResponseRedirect(reverse('index'))
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
             else:
                 context = {
                     "message":"Invalid Credentials.Please Try Again."
                 }
 
-                return render(request,"HealthCentre/loginPortal.html", context)
+                response = render(request,"HealthCentre/loginPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
         else:
             records = patient.patientRecords.all()
@@ -178,11 +238,15 @@ def login(request):
                     "user": records.order_by('-timestamp')
                 }
                 request.session['isLoggedIn'] = True
-                request.session['userEmail'] = userName
+                request.session['userEmail'] = patient.emailHash
                 request.session['Name'] = patient.name
                 request.session['isDoctor'] = False
 
-                return render(request,"HealthCentre/userPatientProfilePortal.html", context)
+                response = HttpResponseRedirect(reverse('index'))
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
             else:
 
@@ -190,15 +254,27 @@ def login(request):
                     "message":"Invalid Credentials.Please Try Again."
                 }
 
-                return render(request,"HealthCentre/loginPortal.html", context)
+                response = render(request,"HealthCentre/loginPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
     else:
-        return render(request,"HealthCentre/loginPortal.html")
+        response = render(request,"HealthCentre/loginPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
 
 def emergency(request):
 
     if request.method == "GET":
-        return render(request,"HealthCentre/emergencyPortal.html")
+        response = render(request,"HealthCentre/emergencyPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
 
     elif request.method == "POST":
 
@@ -213,7 +289,11 @@ def emergency(request):
                 "message" : "Ambulance reaching " + emergencyLocation + " in 2 minutes."
             }
 
-            return render(request, "HealthCentre/emergencyPortal.html", context)
+            response = render(request, "HealthCentre/emergencyPortal.html", context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
         else:
             errorMessage = "No location entered.Invalid input."
@@ -222,10 +302,18 @@ def emergency(request):
                 "message" : errorMessage
             }
 
-            return render(request, "HealthCentre/emergencyPortal.html", context)
+            response = render(request, "HealthCentre/emergencyPortal.html", context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
     else:
-        return render(request,"HealthCentre/emergencyPortal.html")
+        response = render(request,"HealthCentre/emergencyPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
 
 def logout(request):
 
@@ -239,10 +327,18 @@ def logout(request):
         "message":"Successfully Logged Out."
     }
 
-    return HttpResponseRedirect(reverse('login'))
+    response = HttpResponseRedirect(reverse('login'))
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 def contactus(request):
-    return render(request, "HealthCentre/contactus.html")
+    response = render(request, "HealthCentre/contactus.html")
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
 
 def onlineprescription(request):
     if request.method == "GET":
@@ -252,17 +348,29 @@ def onlineprescription(request):
                         "message":"Only for patients."
                 }
                 print("Hello")
-                return render(request, "HealthCentre/prescriptionPortal.html", context)
+                response = render(request, "HealthCentre/prescriptionPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
             else:
                 context = {
                     "doctors" : Doctor.objects.all().order_by('specialization')
                 }
-                return render(request, "HealthCentre/prescriptionPortal.html", context)
+                response = render(request, "HealthCentre/prescriptionPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
         else:
             context = {
                     "message":"Please Login First."
             }
-            return render(request, "HealthCentre/prescriptionPortal.html", context)
+            response = render(request, "HealthCentre/prescriptionPortal.html", context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
     elif request.method == "POST":
         if request.session['isLoggedIn']:
@@ -273,30 +381,46 @@ def onlineprescription(request):
                 prescription.isCompleted = True
                 prescription.isNew = True
                 prescription.save()
-                records = Doctor.objects.get(email = request.session['userEmail']).doctorRecords.all()
+                records = Doctor.objects.get(emailHash = request.session['userEmail']).doctorRecords.all()
                 context = {
                     "user" : records,
                     "successPrescriptionMessage" : "Prescription Successfully Submitted."
                 }
 
-                return render(request, "HealthCentre/userDoctorProfilePortal.html", context)
+                response = render(request, "HealthCentre/userDoctorProfilePortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
 
 
             else:
                 doctor = Doctor.objects.get(pk = request.POST["doctor"])
                 symptoms = request.POST["symptoms"]
-                prescription = Prescription(doctor = doctor, patient = Patient.objects.get(email = request.session['userEmail']), symptoms = symptoms)
+                prescription = Prescription(doctor = doctor, patient = Patient.objects.get(emailHash = request.session['userEmail']), symptoms = symptoms)
                 prescription.save()
                 context = {
                     "successPrescriptionMessage" : "Prescription Successfully Requested.",
                     "doctors"  : Doctor.objects.all().order_by('specialization')
                 }
-                return render(request, "HealthCentre/prescriptionPortal.html", context)
+                response = render(request, "HealthCentre/prescriptionPortal.html", context)
+                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+                response["Pragma"] = "no-cache"
+                response["Expires"] = "0"
+                return response
         else:
             context = {
                     "successPrescriptionMessage":"Please Login First.",
             }
-            return render(request, "HealthCentre/loginPortal.html", context)
+            response = render(request, "HealthCentre/loginPortal.html", context)
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+            return response
 
     else:
-        return render(request, "HealthCentre/prescriptionPortal.html")
+        response = render(request, "HealthCentre/prescriptionPortal.html")
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
