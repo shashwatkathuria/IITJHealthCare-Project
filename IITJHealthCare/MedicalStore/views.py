@@ -8,7 +8,13 @@ from .models import Medicine
 
 def index(request):
     medicines = Medicine.objects.all()
+    
     context = {
-        "medicines" : medicines
+        "medicines" : medicines.order_by('name')
     }
-    return render(request, "MedicalStore/medicines.html", context)
+
+    response = render(request, "MedicalStore/medicines.html", context)
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
