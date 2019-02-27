@@ -26,74 +26,81 @@ IITJ Health Centre
     <br>
     <br>
 
-    <div class="container center_div"style = "background:rgba(0,0,0,0.2);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
-      <form align="center" action="{% url 'register' %}" method="post">
-          {% csrf_token %}
-            <div class="form-row ">
+    {% if request.session.isLoggedIn %}
+        <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
+            Please Log Out First.
+        </div>
+    {% else %}
+        <div class="container center_div"style = "background:rgba(0,0,0,0.2);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
+          <form align="center" action="{% url 'register' %}" method="post">
+              {% csrf_token %}
+                <div class="form-row ">
 
-                  <div class="col-6 ">
-                      <input name="userFirstName"type="text" class="form-control" placeholder="First name">
-                  </div>
-                  <div class="col-6">
-                      <input name="userLastName"type="text" class="form-control" placeholder="Last name">
-                  </div>
+                      <div class="col-6 ">
+                          <input name="userFirstName"type="text" class="form-control" placeholder="First name">
+                      </div>
+                      <div class="col-6">
+                          <input name="userLastName"type="text" class="form-control" placeholder="Last name">
+                      </div>
 
-            </div>
+                </div>
 
-            <br>
+                <br>
 
-            <div class="form-row">
+                <div class="form-row">
 
-                  <div class="col-6">
-                      <input name="userEmail" type="email" class="form-control" placeholder="Email Address">
-                  </div>
+                      <div class="col-6">
+                          <input name="userEmail" type="email" class="form-control" placeholder="Email Address">
+                      </div>
 
-                  <div class="col-6">
-                      <input name="userRollNo" type="text" class="form-control" placeholder="Roll Number">
-                  </div>
+                      <div class="col-6">
+                          <input name="userRollNo" type="text" class="form-control" placeholder="Roll Number">
+                      </div>
 
-            </div>
+                </div>
 
-            <br>
+                <br>
 
-            <div class="form-row">
+                <div class="form-row">
 
-                  <div class="col-6">
-                      <input name="userAddress"type="text" class="form-control" placeholder="Address">
-                  </div>
+                      <div class="col-6">
+                          <input name="userAddress"type="text" class="form-control" placeholder="Address">
+                      </div>
 
-                  <div class="col-6">
-                      <input name="userContactNo" type="number" class="form-control" placeholder="Contact Number">
-                  </div>
+                      <div class="col-6">
+                          <input name="userContactNo" type="number" class="form-control" placeholder="Contact Number">
+                      </div>
 
-            </div>
+                </div>
 
-            <br>
+                <br>
 
-            <div class="form-row">
+                <div class="form-row">
 
-                  <div class="col-6">
-                      <input name="userPassword"type="password" class="form-control" placeholder="Password">
-                  </div>
+                      <div class="col-6">
+                          <input name="userPassword"type="password" class="form-control" placeholder="Password">
+                      </div>
 
-                  <div class="col-6">
-                      <input name="userConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
-                  </div>
+                      <div class="col-6">
+                          <input name="userConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+                      </div>
 
-            </div>
+                </div>
 
-            <br>
+                <br>
 
-            <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+                <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
 
-            <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
-            </div>
+                <div class="form-group form-check">
+                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
+                </div>
 
-            <button type="submit" class="btn btn-warning">Submit</button>
-      </form>
-    </div>
+                <button type="submit" class="btn btn-warning">Submit</button>
+          </form>
+        </div>
+
+    {% endif %}
 
     <br>
 
