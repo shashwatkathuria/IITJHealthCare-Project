@@ -15,39 +15,51 @@ IITJ Health Centre
 
     <br>
 
-    <h1 style="text-align:center;color:white;" class = "display-4">
+    <h1 style="text-align:center;color:yellow;" class = "display-4">
       MEDICAL STORE
     </h1>
 
-    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%;color:yellow"></li>
 
     <br>
     <br>
 
     {% for medicine in medicines %}
         <div class="row container"style="margin: 0 auto;" >
-            <div class="col-sm-12">
-                <div class="card"style = "background:rgba(0,0,0,0.8);color:white;">
+            <div class="col-sm-8" >
+                <div class="card" style = "background:rgba(0,0,0,1.0);color:white;padding-bottom:17%">
                     <div class="card-body">
 
-                        <h5 class="card-title"> {{ medicine.name }}</h5>
+                        <h3 class="card-title"> {{ medicine.name }}</h3>
                         <li class="dropdown-divider"></li>
                         <p class="card-text"><pre style="color:white">Company             : {{ medicine.company }}<br>Manufacturing Date  : {{ medicine.manufacturedDate }}<br>Expiry Date         : {{ medicine.expiryDate }}<br>Quantity Remaining  : {{ medicine.quantity }}</pre></p>
-                        <a href="#" class="btn btn-primary">Price : &#8377;{{ medicine.price }}</a>
-
+                        <h2 class="card-link lead" style="color:yellow;margin-bottom:0;">Price : &#8377;{{ medicine.price }}</h2>
                     </div>
                 </div>
             </div>
-        </div>
+            <div class="col-sm-4" style = "background:rgba(0,0,0,1.0)">
+              <div class="container"style="padding:5%" >
+                            {% with 'MedicalStore/images/'|add:medicine.photoId as image_static %}
+                                  <img style="display: block;"src="{% static image_static %}" class="rounded mx-auto d-block img-fluid" alt="Responsive image">
+                            {% endwith %}
+              </div>
 
+            </div>
+
+        </div>
+        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%;margin-top:1.5%;margin-bottom:0px"></li>
         <br>
+
+
 
     {% empty %}
 
+
         <h1 style="text-align:center;color:white" >
-            Sorry! No doctors available right now. Please try again later!
+            Sorry! No medicines available right now. Please try again later!
         </h1>
 
     {% endfor %}
+
 
 {% endblock %}
