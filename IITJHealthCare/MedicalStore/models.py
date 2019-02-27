@@ -9,6 +9,7 @@ class Medicine(models.Model):
     manufacturedDate = models.DateField()
     quantity = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
+    photoId = models.CharField(max_length = 100)
 
     def __str__(self):
         return "Name : " + str(self.name) + " Company : " + str(self.company) + " Manufactured Date : " + str(self.manufacturedDate) + " Expiry Date : " + str(self.expiryDate) + " Quantity : " + str(self.quantity)
