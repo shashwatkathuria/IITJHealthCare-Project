@@ -116,7 +116,7 @@ def login(request):
                     "user": records.order_by('-timestamp')
                 }
 
-                response = HttpResponseRedirect(reverse('index'))
+                response = render(request,"HealthCentre/userDoctorProfilePortal.html", context)
                 response["Cache-Control"] = "no-cache, no-store, must-revalidate"
                 response["Pragma"] = "no-cache"
                 response["Expires"] = "0"
