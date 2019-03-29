@@ -23,11 +23,11 @@
 {% block bodytag %}
 {% endblock %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
         {% if request.session.isLoggedIn %}
-            <a class="navbar-brand" href="/"><h3 style="color:grey;text-align:center">Hi, {{ request.session.Name }}</h3></a>
+            <a class="navbar-brand" href="/"><h3 style="color:black;text-align:center">Hi, {{ request.session.Name }}</h3></a>
         {% else %}
-            <a class="navbar-brand" href="/"><h2 style="color:grey;text-align:center">IIT Jodhpur Health Centre</h2></a>
+            <a class="navbar-brand" href="/"><h2 style="color:black;text-align:center">IIT Jodhpur Health Centre</h2></a>
         {% endif %}
 
         <img src="{% static 'HealthCentre/images/jdh10.png' %}" style="width:5%;height:5%;"></img>
@@ -39,21 +39,21 @@
             <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'index' %}" style="color:black;">Home <span class="sr-only">(current)</span></a>
                 </li>
 
                 {% if request.session.isLoggedIn %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Your Prescriptions <span class="badge badge-primary badge-pill">{{ request.session.numberNewPrescriptions }} NEW</span></a>
+                        <a class="nav-link" href="{% url 'login' %}" style="color:black;">Your Prescriptions <span class="badge badge-primary badge-pill">{{ request.session.numberNewPrescriptions }} NEW</span></a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'login' %}" style="color:black;">Login</a>
                       </li>
                 {% endif %}
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" style="color:black;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       Options
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -66,14 +66,14 @@
 
                         {% if request.session.isLoggedIn %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}" style="color:black;">Logout</a>
                         {% endif %}
 
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'onlineprescription' %}">Online Prescription</a>
+                    <a class="nav-link" href="{% url 'onlineprescription' %}" style="color:black;">Online Prescription</a>
                 </li>
 
                 <li class="nav-item">
