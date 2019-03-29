@@ -7,7 +7,7 @@ IITJ Health Centre
 {% block bodytag %}
 
   {% load static %}
-  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+  <body background="{% static 'HealthCentre/images/i6.jpg' %}" style="background-size: auto auto;">
 
 {% endblock %}
 
@@ -15,11 +15,11 @@ IITJ Health Centre
 
     <br>
 
-    <h1 style="text-align:center;color:white;" class = "display-4">
-      AVAILABLE DOCTORS
+    <h1 style="text-align:center;color:black;" class = "display-4">
+      Available Doctors
     </h1>
 
-    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%;border-color:black"></li>
 
     <br>
     <br>
@@ -47,7 +47,7 @@ IITJ Health Centre
         <h1 style="text-align:center;color:white" >
             Sorry! No doctors available right now. Please try again later!
         </h1>
-        
+
     {% endfor %}
 
 {% endblock %}
