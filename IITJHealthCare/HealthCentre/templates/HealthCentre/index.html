@@ -21,7 +21,7 @@
 {% block bodytag %}
 
     {% load static %}
-    <body background="{% static 'HealthCentre/images/jdh14.jpg' %}" style="background-size: 100% auto;">
+    <body background="{% static 'HealthCentre/images/i6.jpg' %}" style="background-size: auto auto;">
 
 {% endblock %}
 
@@ -75,19 +75,21 @@
         </a>
 
     </div>
-
-    <div class="jumbotron" style="margin: 0 auto;">
-        <h1 class="display-4">Hey there! Haven't registered yet?!</h1>
-        <p class="lead">Register yourself today and get access to all the benefits of the Health Centre!</p>
-        <hr class="my-4">
-        <p>You must be a member of IIT Jodhpur to have access to this facility.</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
-    </div>
+    {% if request.session.isLoggedIn %}
+      {% else %}
+      <div class="jumbotron" style="margin: 0 auto;">
+          <h1 class="display-4">Hey there! Haven't registered yet?!</h1>
+          <p class="lead">Register yourself today and get access to all the benefits of the Health Centre!</p>
+          <hr class="my-4">
+          <p>You must be a member of IIT Jodhpur to have access to this facility.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
+      </div>
+    {% endif %}
 
     <div>
-        <hr class="my-4" >
-        <h1 class ="display-3"style="text-align:center;color:white">BENEFITS</h1>
-        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+        <hr class="my-4">
+        <h1 class ="display-3"style="text-align:center;color:black">BENEFITS</h1>
+        <li class="dropdown-divider" style="margin-left:25%;margin-right:25%;border-color:black"></li>
 
         <div class="row"style="margin: 0 auto;" >
 
