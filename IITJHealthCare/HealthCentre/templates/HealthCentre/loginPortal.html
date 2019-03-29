@@ -9,57 +9,76 @@ IITJ Health Centre
 {% block bodytag %}
 
   {% load static %}
-  <body background="{% static 'HealthCentre/images/jdh3.jpg' %}" style="background-size: 100% auto;">
+  <body background="{% static 'HealthCentre/images/i6.jpg' %}" style="background-size: auto auto;">
 
 {% endblock %}
 
 {% block body %}
 
-    <br>
-    <br>
+    <div class="row" >
+        <div class="col-sm-6" style="margin-top:5%;">
+            <div class="jumbotron jumbotron-fluid" style = "height:100%;padding:5%;margin-left:5%;margin-right:5%;background:rgba(0,0,0,0.6);color:white;">
+                <h1 style="color:white" align="left">
+                  Login
+                </h1>
 
-    <h1 style="text-align:center;color:white" class = "display-3">
-      LOGIN
-    </h1>
+                <li class="dropdown-divider" align="left" style="border-color:white"></li>
+                <br>
+                <form align="left" action="{% url 'login' %}" method="post" style="margin-right:5%">
+                    {% csrf_token %}
 
-    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+                    <br>
 
-    <br>
-    <br>
+                    <div class="form-row" >
+                        <div class="col-12">
+                            <input name="useremail" type="email" class="form-control" placeholder="Email Address">
+                        </div>
+                    </div>
 
-    <div class="container center_div" align ="center" width="300px">
-        <form align="center" action="{% url 'login' %}" method="post">
-            {% csrf_token %}
+                    <br>
 
-            <br>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <input name="userpassword" type="password" class="form-control" placeholder="Password">
+                        </div>
+                    </div>
 
-            <div class="form-row">
-                <div class="col-12">
-                    <input name="useremail" type="email" class="form-control" placeholder="Email Address">
-                </div>
+                    <br>
+                    <button type="submit" class="btn btn-warning btn-lg" >Login</button>
+                </form>
+
+                <br>
+
+                {% if message %}
+                    <div style="text-align:center;margin:0 auto;"class="alert alert-danger" role="alert" >
+                        {{ message }}
+                    </div>
+                {% endif %}
             </div>
+        </div>
+      <div class="col-sm-6" style="margin-top:5%;">
+          <div class="jumbotron jumbotron-fluid" style = "height:100%;padding:5%;margin-left:5%;margin-right:5%;background:rgba(0,0,0,0.6);color:white;">
+            <h1 style="color:white" align="left">
+              Sign Up
+            </h1>
+
+            <li class="dropdown-divider" align="left" style="border-color:white"></li>
+            <br>
+            <h2>Haven't registered yet?</h2>
+
+            <p class="lead">Register now to get all the benefits of the Health Centre!</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register</a>
 
             <br>
-
-            <div class="form-row">
-                <div class="col-12">
-                    <input name="userpassword" type="password" class="form-control" placeholder="Password">
-                </div>
-            </div>
-
             <br>
-            <button type="submit" class="btn btn-warning btn-lg" >Login</button>
-        </form>
+          </div>
+      </div>
     </div>
 
     <br>
 
-    {% if message %}
-        <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
-            {{ message }}
-        </div>
-    {% endif %}
+
 
     <br>
-    
+
 {% endblock %}
