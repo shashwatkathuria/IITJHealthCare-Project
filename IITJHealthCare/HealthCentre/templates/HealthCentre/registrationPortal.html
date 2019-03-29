@@ -8,96 +8,95 @@ IITJ Health Centre
 {% block bodytag %}
 
   {% load static %}
-  <body background="{% static 'HealthCentre/images/jdh8.jpg' %}" style="background-size: 100% auto;">
+  <body background="{% static 'HealthCentre/images/i6.jpg' %}" style="background-size: auto auto;">
 
 {% endblock %}
 
 
 {% block body %}
 
-    <br>
 
-    <h1 style="text-align:center;color:white" class = "display-4">
-          REGISTRATION DETAILS
-    </h1>
+        <div class="jumbotron jumbotron-fluid" style = "margin:5%;padding:5%;background:rgba(0,0,0,0.8);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
+          <h1 style="text-align:left;color:white" class = "display-5">
+                Register Here.
+          </h1>
+          <li class="dropdown-divider" style="border-color:white"></li>
+          {% if request.session.isLoggedIn %}
+              <br>
+              <br>
+              <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
+                  You are already a user!
+              </div>
+              <br>
+              <br>
+          {% else %}
+            <br>
+            <form align="center" action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                  <div class="form-row ">
 
-    <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
+                        <div class="col-6 ">
+                            <input name="userFirstName"type="text" class="form-control" placeholder="First name">
+                        </div>
+                        <div class="col-6">
+                            <input name="userLastName"type="text" class="form-control" placeholder="Last name">
+                        </div>
 
-    <br>
-    <br>
+                  </div>
 
-    {% if request.session.isLoggedIn %}
-        <div style="text-align:center;margin:0 auto;"class="alert alert-warning" role="alert">
-            Please Log Out First.
-        </div>
-    {% else %}
-        <div class="container center_div"style = "background:rgba(0,0,0,0.2);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
-          <form align="center" action="{% url 'register' %}" method="post">
-              {% csrf_token %}
-                <div class="form-row ">
+                  <br>
 
-                      <div class="col-6 ">
-                          <input name="userFirstName"type="text" class="form-control" placeholder="First name">
-                      </div>
-                      <div class="col-6">
-                          <input name="userLastName"type="text" class="form-control" placeholder="Last name">
-                      </div>
+                  <div class="form-row">
 
-                </div>
+                        <div class="col-6">
+                            <input name="userEmail" type="email" class="form-control" placeholder="Email Address">
+                        </div>
 
-                <br>
+                        <div class="col-6">
+                            <input name="userRollNo" type="text" class="form-control" placeholder="Roll Number">
+                        </div>
 
-                <div class="form-row">
+                  </div>
 
-                      <div class="col-6">
-                          <input name="userEmail" type="email" class="form-control" placeholder="Email Address">
-                      </div>
+                  <br>
 
-                      <div class="col-6">
-                          <input name="userRollNo" type="text" class="form-control" placeholder="Roll Number">
-                      </div>
+                  <div class="form-row">
 
-                </div>
+                        <div class="col-6">
+                            <input name="userAddress"type="text" class="form-control" placeholder="Address">
+                        </div>
 
-                <br>
+                        <div class="col-6">
+                            <input name="userContactNo" type="number" class="form-control" placeholder="Contact Number">
+                        </div>
 
-                <div class="form-row">
+                  </div>
 
-                      <div class="col-6">
-                          <input name="userAddress"type="text" class="form-control" placeholder="Address">
-                      </div>
+                  <br>
 
-                      <div class="col-6">
-                          <input name="userContactNo" type="number" class="form-control" placeholder="Contact Number">
-                      </div>
+                  <div class="form-row">
 
-                </div>
+                        <div class="col-6">
+                            <input name="userPassword"type="password" class="form-control" placeholder="Password">
+                        </div>
 
-                <br>
+                        <div class="col-6">
+                            <input name="userConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
+                        </div>
 
-                <div class="form-row">
+                  </div>
 
-                      <div class="col-6">
-                          <input name="userPassword"type="password" class="form-control" placeholder="Password">
-                      </div>
+                  <br>
 
-                      <div class="col-6">
-                          <input name="userConfirmPassword" type="password" class="form-control" placeholder="Confirm Password">
-                      </div>
+                  <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
 
-                </div>
+                  <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
+                  </div>
 
-                <br>
-
-                <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
-
-                <div class="form-group form-check">
-                      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                      <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
-                </div>
-
-                <button type="submit" class="btn btn-warning">Submit</button>
-          </form>
+                  <button type="submit" class="btn btn-warning">Submit</button>
+            </form>
         </div>
 
     {% endif %}
