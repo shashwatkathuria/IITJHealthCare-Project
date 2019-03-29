@@ -11,14 +11,14 @@ Medical Store.
 SOFTWARE ENGINEERING PARADIGMS
 ----------------------------
 
-The variuous aspects of software engineering applied to this project can be found
+The various aspects of software engineering applied to this project can be found
 in 'Pitch.pdf'.
 
 ----------------------------
 TECHNOLOGIES USED
 ----------------------------
 
-- Python
+- Python 3.6
 - Django 2.1
 - SQLLite
 - Bootstrap ( HTML / CSS / Javascript )
