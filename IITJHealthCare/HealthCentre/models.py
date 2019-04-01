@@ -18,8 +18,8 @@ class Patient(models.Model):
     name = models.CharField(max_length = 30)
     address = models.CharField(max_length = 100)
     contactNumber = models.CharField(max_length = 10)
-    rollNumber = models.CharField(unique = True, max_length = 8)
     email = models.EmailField(unique = True, max_length = 255)
+    rollNumber = models.CharField(unique = True, max_length = 8)
     passwordHash = models.CharField(max_length = 64)
     emailHash = models.CharField(max_length = 64)
 
@@ -51,13 +51,13 @@ def passwordHasher(userPassword):
     return passwordHash
 
 
-def emailHasher(userPassword):
+def emailHasher(userEmail):
     """Function to return the hash of the email using SHA-256. Input is the email of the user in string."""
-    userPassword = userPassword
+    userEmail = userEmail
     SHA256Engine = SHA256.new()
-    userPassword = userPassword.encode()
-    SHA256Engine.update(userPassword)
-    passwordHash = SHA256Engine.digest()
-    passwordHash = encode(passwordHash, 'hex')
-    passwordHash = decode(passwordHash, 'utf-8')
-    return passwordHash
+    userEmail = userEmail.encode()
+    SHA256Engine.update(userEmail)
+    emailHash = SHA256Engine.digest()
+    emailHash = encode(emailHash, 'hex')
+    emailHash = decode(emailHash, 'utf-8')
+    return emailHash
