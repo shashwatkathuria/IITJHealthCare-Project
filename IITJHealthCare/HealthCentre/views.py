@@ -12,10 +12,7 @@ def index(request):
 
     # Editing response headers so as to ignore cached versions of pages
     response = render(request,"HealthCentre/index.html")
-    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response["Pragma"] = "no-cache"
-    response["Expires"] = "0"
-    return response
+    return responseHeadersModifier(response)
 
 
 def register(request):
@@ -26,10 +23,7 @@ def register(request):
 
         # Editing response headers so as to ignore cached versions of pages
         response =  render(request,"HealthCentre/registrationPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
     # If the user wants to submit his/her information
     elif request.method == "POST":
@@ -66,10 +60,7 @@ def register(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request, "HealthCentre/registrationPortal.html",context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
         # If the passwords given don't match
         else:
@@ -80,20 +71,14 @@ def register(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request,"HealthCentre/registrationPortal.html",context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
     # For any other method of request, sending back the registration page.
     else:
 
         # Editing response headers so as to ignore cached versions of pages
         response = render(request,"HealthCentre/registrationPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
 
 def doctors(request):
@@ -106,10 +91,7 @@ def doctors(request):
 
     # Editing response headers so as to ignore cached versions of pages
     response = render(request,"HealthCentre/doctors.html",context)
-    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response["Pragma"] = "no-cache"
-    response["Expires"] = "0"
-    return response
+    return responseHeadersModifier(response)
 
 
 def login(request):
@@ -141,10 +123,7 @@ def login(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/userDoctorProfilePortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             # If the user is already logged in inside of his sessions, and is a patient, then no authentication required
             elif request.session['isLoggedIn'] and (not request.session['isDoctor']):
@@ -174,28 +153,19 @@ def login(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/userPatientProfilePortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             else:
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/loginPortal.html")
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
         # If any error occurs, sending back a new blank page
         except:
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request,"HealthCentre/loginPortal.html")
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
     # If the request method is post
     elif request.method == "POST":
@@ -229,10 +199,7 @@ def login(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/loginPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
         # Getting the hash of user inputted password
         passwordHash = passwordHasher(userPassword)
@@ -268,10 +235,7 @@ def login(request):
                 # Redirecting to home page
                 # Editing response headers so as to ignore cached versions of pages
                 response = HttpResponseRedirect(reverse('index'))
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             # Else if the password inputted is worng and doesn't match
             else:
@@ -283,10 +247,7 @@ def login(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/loginPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
         # Otherwise if the user is a patient
         else:
@@ -326,10 +287,7 @@ def login(request):
                 # Redirecting to home page
                 # Editing response headers so as to ignore cached versions of pages
                 response = HttpResponseRedirect(reverse('index'))
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             # Else if the password inputted is worng and doesn't match
             else:
@@ -341,17 +299,11 @@ def login(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request,"HealthCentre/loginPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
     # For any other method of access, returning a new blank login page
     else:
         response = render(request,"HealthCentre/loginPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
 def emergency(request):
     """ Funtion for emergency situations, for requesting an ambulance."""
@@ -361,10 +313,7 @@ def emergency(request):
 
         # Editing response headers so as to ignore cached versions of pages
         response = render(request,"HealthCentre/emergencyPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
     # If the request method is post and the user is submitting information
     elif request.method == "POST":
@@ -388,10 +337,7 @@ def emergency(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request, "HealthCentre/emergencyPortal.html", context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
         # Else if the emergency location is an empty string
         else:
@@ -403,20 +349,14 @@ def emergency(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request, "HealthCentre/emergencyPortal.html", context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
     # For any other method of access, returning a new blank emergency page
     else:
 
         # Editing response headers so as to ignore cached versions of pages
         response = render(request,"HealthCentre/emergencyPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
 def logout(request):
     """Function to log out the user."""
@@ -436,20 +376,14 @@ def logout(request):
     # Redirecting to home page
     # Editing response headers so as to ignore cached versions of pages
     response = HttpResponseRedirect(reverse('login'))
-    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response["Pragma"] = "no-cache"
-    response["Expires"] = "0"
-    return response
+    return responseHeadersModifier(response)
 
 def contactus(request):
     """Function to display contact information."""
 
     # Editing response headers so as to ignore cached versions of pages
     response = render(request, "HealthCentre/contactus.html")
-    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response["Pragma"] = "no-cache"
-    response["Expires"] = "0"
-    return response
+    return responseHeadersModifier(response)
 
 def onlineprescription(request):
     """Function to submit online prescription request to doctor."""
@@ -470,10 +404,7 @@ def onlineprescription(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request, "HealthCentre/prescriptionPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             # If the user is a patient
             else:
@@ -485,10 +416,7 @@ def onlineprescription(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request, "HealthCentre/prescriptionPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
         # If the user is not logged in
         else:
@@ -500,10 +428,7 @@ def onlineprescription(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request, "HealthCentre/prescriptionPortal.html", context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
     # If the user is posting the prescription request
     elif request.method == "POST":
@@ -535,10 +460,7 @@ def onlineprescription(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request, "HealthCentre/userDoctorProfilePortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
             # Else if the patient is submitting prescription request
             else:
@@ -559,10 +481,7 @@ def onlineprescription(request):
 
                 # Editing response headers so as to ignore cached versions of pages
                 response = render(request, "HealthCentre/prescriptionPortal.html", context)
-                response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-                response["Pragma"] = "no-cache"
-                response["Expires"] = "0"
-                return response
+                return responseHeadersModifier(response)
 
         # Else if the user is not logged in
         else:
@@ -574,17 +493,19 @@ def onlineprescription(request):
 
             # Editing response headers so as to ignore cached versions of pages
             response = render(request, "HealthCentre/loginPortal.html", context)
-            response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-            response["Pragma"] = "no-cache"
-            response["Expires"] = "0"
-            return response
+            return responseHeadersModifier(response)
 
     # For any other method of access, returning a new blank online prescription page
     else:
 
         # Editing response headers so as to ignore cached versions of pages
         response = render(request, "HealthCentre/prescriptionPortal.html")
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
+
+
+def responseHeadersModifier(response):
+    """Funtion to edit response headers so that no cached versions can be viewed. Returns the modified response."""
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
