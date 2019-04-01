@@ -2,9 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import Doctor, Patient, Prescription
-from Crypto.Hash import SHA256
-from codecs import encode,decode
+from .models import Doctor, Patient, Prescription, passwordHasher, emailHasher
 from django.db.models import Count, Q
 
 # Create your views here.
@@ -52,20 +50,10 @@ def register(request):
             name = userFirstName + " " + userLastName
 
             # Encrypting password to store inside database
-            SHA256Engine = SHA256.new()
-            userPassword = userPassword.encode()
-            SHA256Engine.update(userPassword)
-            passwordHash = SHA256Engine.digest()
-            passwordHash = encode(passwordHash, 'hex')
-            passwordHash = decode(passwordHash, 'utf-8')
+            passwordHash = passwordHasher(userPassword)
 
             # Encrypting email to store inside database
-            SHA256Engine = SHA256.new()
-            userEmail = userEmail.encode()
-            SHA256Engine.update(userEmail)
-            emailHash = SHA256Engine.digest()
-            emailHash = encode(emailHash, 'hex')
-            emailHash = decode(emailHash, 'utf-8')
+            emailHash = emailHasher(userEmail)
 
             # Creating a patient object and saving insdie the database
             patient = Patient(name = name,rollNumber = userRollNo, email = userEmail, password = passwordHash, address = userAddress, contactNumber = userContactNo, emailHash = emailHash )
@@ -247,12 +235,7 @@ def login(request):
                 return response
 
         # Getting the hash of user inputted password
-        SHA256Engine = SHA256.new()
-        userPassword = userPassword.encode()
-        SHA256Engine.update(userPassword)
-        passwordHash = SHA256Engine.digest()
-        passwordHash = encode(passwordHash, 'hex')
-        passwordHash = decode(passwordHash, 'utf-8')
+        passwordHash = passwordHasher(userPassword)
 
         # If the logged in user is a doctor
         if request.session['isDoctor']:
@@ -390,7 +373,6 @@ def emergency(request):
         emergencyLocation = request.POST['emergencyLocation']
 
         # Giving emergency message to server, can also be connected to IOT devices for alarms
-
         # If the emergency location text is not an empty string
         if emergencyLocation != "":
 
