@@ -1,6 +1,6 @@
 from django.db import models
-
-# Create your models here.
+from Crypto.Hash import SHA256
+from codecs import encode,decode
 
 class Doctor(models.Model):
     name = models.CharField(max_length = 30)
@@ -38,3 +38,24 @@ class Prescription(models.Model):
 
     def __str__(self):
         return "\nDoctor :" + str(self.doctor) + "\n\nPatient :" + str(self.patient) + "\n\nPrescription : \n\n" + self.prescriptionText + "\n\n"
+
+def passwordHasher(userPassword):
+
+    userPassword = userPassword
+    SHA256Engine = SHA256.new()
+    userPassword = userPassword.encode()
+    SHA256Engine.update(userPassword)
+    passwordHash = SHA256Engine.digest()
+    passwordHash = encode(passwordHash, 'hex')
+    passwordHash = decode(passwordHash, 'utf-8')
+    return passwordHash
+def emailHasher(userPassword):
+
+    userPassword = userPassword
+    SHA256Engine = SHA256.new()
+    userPassword = userPassword.encode()
+    SHA256Engine.update(userPassword)
+    passwordHash = SHA256Engine.digest()
+    passwordHash = encode(passwordHash, 'hex')
+    passwordHash = decode(passwordHash, 'utf-8')
+    return passwordHash
