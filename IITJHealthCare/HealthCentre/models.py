@@ -8,8 +8,8 @@ class Doctor(models.Model):
     contactNumber = models.CharField(unique = True, max_length = 10)
     email = models.EmailField(unique = True, max_length = 255)
     specialization = models.CharField(max_length = 100)
-    password = models.CharField(max_length = 64)
-    emailHash = models.CharField(max_length = 64, default="")
+    passwordHash = models.CharField(max_length = 64)
+    emailHash = models.CharField(max_length = 64)
 
     def __str__(self):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email + " Specialization : " + self.specialization
@@ -20,8 +20,8 @@ class Patient(models.Model):
     contactNumber = models.CharField(max_length = 10)
     rollNumber = models.CharField(unique = True, max_length = 8)
     email = models.EmailField(unique = True, max_length = 255)
-    password = models.CharField(max_length = 64)
-    emailHash = models.CharField(max_length = 64, default="")
+    passwordHash = models.CharField(max_length = 64)
+    emailHash = models.CharField(max_length = 64)
 
     def __str__(self):
         return "Name : " + self.name + " Address : " + self.address + " Contact : " + self.contactNumber + " Email : " + self.email
@@ -35,12 +35,12 @@ class Prescription(models.Model):
     isCompleted = models.BooleanField(default = False)
     symptoms = models.CharField(max_length = 2000)
 
-
     def __str__(self):
         return "\nDoctor :" + str(self.doctor) + "\n\nPatient :" + str(self.patient) + "\n\nPrescription : \n\n" + self.prescriptionText + "\n\n"
 
-def passwordHasher(userPassword):
 
+def passwordHasher(userPassword):
+    """Function to return the hash of the password using SHA-256. Input is the password of the user in string."""
     userPassword = userPassword
     SHA256Engine = SHA256.new()
     userPassword = userPassword.encode()
@@ -49,8 +49,10 @@ def passwordHasher(userPassword):
     passwordHash = encode(passwordHash, 'hex')
     passwordHash = decode(passwordHash, 'utf-8')
     return passwordHash
-def emailHasher(userPassword):
 
+
+def emailHasher(userPassword):
+    """Function to return the hash of the email using SHA-256. Input is the email of the user in string."""
     userPassword = userPassword
     SHA256Engine = SHA256.new()
     userPassword = userPassword.encode()

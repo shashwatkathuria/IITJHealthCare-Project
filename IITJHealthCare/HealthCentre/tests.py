@@ -1,15 +1,19 @@
 from django.test import Client, TestCase
-from .models import Doctor, Patient, Prescription, passwordHasher
+from .models import Doctor, Patient, Prescription, passwordHasher, emailHasher
 
 class DoctorsTestCase(TestCase):
 
     def setUp(self):
 
+        email = "abcdefgh@gmail.com"
         passwordHash = passwordHasher("12345")
-        d1 = Doctor.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", email = "abcdefgh@gmail.com", password = passwordHash)
+        emailHash = emailHasher(email)
+        d1 = Doctor.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        email = "ijklmnop@gmail.com"
         passwordHash = passwordHasher("67890")
-        d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", email = "ijklmnop@gmail.com", password = passwordHash)
+        emailHash = emailHasher(email)
+        d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
     def testDoctorCount(self):
         doctors = Doctor.objects.all()
@@ -19,7 +23,7 @@ class DoctorsTestCase(TestCase):
         doctors = Doctor.objects.all()
         passwordHashes = []
         for doctor in doctors:
-            passwordHashes.append(doctor.password)
+            passwordHashes.append(doctor.passwordHash)
 
         passwordHashes = set(passwordHashes)
         passwordHashes = list(passwordHashes)

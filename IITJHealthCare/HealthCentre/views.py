@@ -50,7 +50,7 @@ def register(request):
             emailHash = emailHasher(userEmail)
 
             # Creating a patient object and saving insdie the database
-            patient = Patient(name = name,rollNumber = userRollNo, email = userEmail, password = passwordHash, address = userAddress, contactNumber = userContactNo, emailHash = emailHash )
+            patient = Patient(name = name,rollNumber = userRollNo, email = userEmail, passwordHash = passwordHash, address = userAddress, contactNumber = userContactNo, emailHash = emailHash )
             patient.save()
 
             # Storing success message in the context variable
@@ -217,7 +217,7 @@ def login(request):
             request.session['numberNewPrescriptions'] = numberNewPendingPrescriptions
 
             # If the inputted hash and the original user password hash match
-            if passwordHash == doctor.password:
+            if passwordHash == doctor.passwordHash:
 
                 # Storing user info inside context variable
                 context = {
@@ -268,7 +268,7 @@ def login(request):
                     record.save()
 
             # If the inputted hash and the original user password hash match
-            if passwordHash == patient.password:
+            if passwordHash == patient.passwordHash:
 
                 # Storing user info inside context variable
                 context = {
