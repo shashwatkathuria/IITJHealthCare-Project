@@ -106,3 +106,60 @@ class PatientsTestCase(TestCase):
         emailHashes = list(emailHashes)
 
         self.assertEqual(len(emailHashes), 2)
+
+class PrescriptionsTestCase(TestCase):
+
+    def setUp(self):
+
+        email = "abcdefgh@gmail.com"
+        passwordHash = passwordHasher("12345")
+        emailHash = emailHasher(email)
+        d1 = Doctor.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", specialization = "ENT", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        email = "ijklmnop@gmail.com"
+        passwordHash = passwordHasher("67890")
+        emailHash = emailHasher(email)
+        d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", specialization = "EYE", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        email = "12345@gmail.com"
+        passwordHash = passwordHasher("abcdefgh")
+        emailHash = emailHasher(email)
+        p1 = Patient.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", rollNumber = "B17CS101", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        email = "67890@gmail.com"
+        passwordHash = passwordHasher("ijklmnop")
+        emailHash = emailHasher(email)
+        p2 = Patient.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", rollNumber = "B17CS102", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        symptoms = "aaaaa bbbbb"
+        prescription1 = Prescription.objects.create(doctor = d1, patient = p1, symptoms = symptoms)
+
+        symptoms = "ccccc ddddd"
+        prescription2 = Prescription.objects.create(doctor = d2, patient = p2, symptoms = symptoms)
+
+    def testPrescriptionCount(self):
+        prescriptions = Prescription.objects.all()
+        self.assertEqual(prescriptions.count(), 2)
+
+    def testIncompletePrescription(self):
+        prescriptions = Prescription.objects.all()
+        for prescription in prescriptions:
+            self.assertTrue(prescription.isNew)
+            self.assertFalse(prescription.isCompleted)
+
+    def testCompletePrescription(self):
+        prescriptions = Prescription.objects.all()
+        for prescription in prescriptions:
+            prescription.prescriptionText = "Aaaaaa Bbbbbb Cccccc Dddddd"
+            prescription.isNew = False
+            prescription.isCompleted = True
+
+        prescription1 = prescriptions[0]
+        self.assertTrue(prescription1.doctor.id == Doctor.objects.get(email="abcdefgh@gmail.com").id and prescription1.patient.id == Patient.objects.get(email = "12345@gmail.com").id and prescription1.prescriptionText == "Aaaaaa Bbbbbb Cccccc Dddddd")
+        self.assertTrue(prescription1.isCompleted)
+        self.assertFalse(prescription1.isNew)
+
+        prescription2 = prescriptions[1]
+        self.assertTrue(prescription2.doctor.id == Doctor.objects.get(email="ijklmnop@gmail.com").id and prescription2.patient.id == Patient.objects.get(email = "67890@gmail.com").id and prescription2.prescriptionText == "Aaaaaa Bbbbbb Cccccc Dddddd")
+        self.assertTrue(prescription2.isCompleted)
+        self.assertFalse(prescription2.isNew)
