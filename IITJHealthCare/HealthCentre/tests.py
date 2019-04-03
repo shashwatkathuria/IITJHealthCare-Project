@@ -163,3 +163,43 @@ class PrescriptionsTestCase(TestCase):
         self.assertTrue(prescription2.doctor.id == Doctor.objects.get(email="ijklmnop@gmail.com").id and prescription2.patient.id == Patient.objects.get(email = "67890@gmail.com").id and prescription2.prescriptionText == "Aaaaaa Bbbbbb Cccccc Dddddd")
         self.assertTrue(prescription2.isCompleted)
         self.assertFalse(prescription2.isNew)
+
+def checkResponseHeaders(response):
+    return response["Cache-Control"] == "no-cache, no-store, must-revalidate" and response["Pragma"] == "no-cache" and response["Expires"] == "0"
+
+class ClientsInteractionTestCase(TestCase):
+
+    def setUp(self):
+
+        email = "abcdefgh@gmail.com"
+        passwordHash = passwordHasher("12345")
+        emailHash = emailHasher(email)
+        d1 = Doctor.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", specialization = "ENT", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        email = "ijklmnop@gmail.com"
+        passwordHash = passwordHasher("67890")
+        emailHash = emailHasher(email)
+        d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", specialization = "EYE", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+    def testValidIndexPage(self):
+        client = Client()
+
+        response = client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+    def testValidContactUsPage(self):
+        client = Client()
+
+        response = client.get("/contactus")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+    def testValidDoctorsPage(self):
+        client = Client()
+
+        response = client.get("/doctors")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+        self.assertEqual(response.context["doctors"].count(), 2)
