@@ -203,3 +203,44 @@ class ClientsInteractionTestCase(TestCase):
         self.assertTrue(checkResponseHeaders(response))
 
         self.assertEqual(response.context["doctors"].count(), 2)
+
+    def testGetEmergencyPage(self):
+        client = Client()
+
+        response = client.get("/emergency")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+    def testPostEmergencyPage(self):
+        client = Client()
+
+        print("\n Testing...Emergency Message to be displayed on screen if everything works correctly.\n")
+        response = client.post("/emergency", {'emergencyLocation':'XYZ Location'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn('XYZ Location', response.context['message'])
+
+        response = client.post("/emergency", {'emergencyLocation':''})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn('Invalid input', response.context['message'])
+
+    def testGetRegisterPage(self):
+        client = Client()
+
+        response = client.get("/register")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+    def testPostRegisterPage(self):
+        client = Client()
+
+        response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "12345"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn("Registration Successful", response.context["message"])
+
+        response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "123456"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn("Passwords do not match", response.context["message"])
