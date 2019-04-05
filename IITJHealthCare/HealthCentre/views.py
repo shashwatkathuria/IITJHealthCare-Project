@@ -219,13 +219,6 @@ def login(request):
             # If the inputted hash and the original user password hash match
             if passwordHash == doctor.passwordHash:
 
-                # Storing user info inside context variable
-                context = {
-                    "message" : "Successfully Logged In.",
-                    "isAuthenticated" : True,
-                    "user": records.order_by('-timestamp')
-                }
-
                 # Storing required information in session variable of request
                 request.session['isLoggedIn'] = True
                 request.session['userEmail'] = doctor.emailHash
@@ -269,13 +262,6 @@ def login(request):
 
             # If the inputted hash and the original user password hash match
             if passwordHash == patient.passwordHash:
-
-                # Storing user info inside context variable
-                context = {
-                    "message" : "Successfully Logged In.",
-                    "isAuthenticated" : True,
-                    "user": records.order_by('-timestamp')
-                }
 
                 # Storing required information in session variable of request
                 request.session['isLoggedIn'] = True
