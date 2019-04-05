@@ -181,6 +181,22 @@ class ClientsInteractionTestCase(TestCase):
         emailHash = emailHasher(email)
         d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", specialization = "EYE", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        email = "12345@gmail.com"
+        passwordHash = passwordHasher("abcdefgh")
+        emailHash = emailHasher(email)
+        p1 = Patient.objects.create(name = "Abcd Efgh", address = "Aaaa, Bbbbb, 110011", contactNumber = "8888888888", rollNumber = "B17CS101", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        email = "67890@gmail.com"
+        passwordHash = passwordHasher("ijklmnop")
+        emailHash = emailHasher(email)
+        p2 = Patient.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", rollNumber = "B17CS102", email = email, passwordHash = passwordHash, emailHash = emailHash)
+
+        symptoms = "aaaaa bbbbb"
+        prescription1 = Prescription.objects.create(doctor = d1, patient = p1, symptoms = symptoms)
+
+        symptoms = "ccccc ddddd"
+        prescription2 = Prescription.objects.create(doctor = d2, patient = p2, symptoms = symptoms)
+
     def testValidIndexPage(self):
         client = Client()
 
@@ -244,3 +260,47 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertIn("Passwords do not match", response.context["message"])
+
+    def testGetLoginPageWithNoSessionInfo(self):
+        client = Client()
+
+        response = client.get("/login")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+
+    def testPostDoctorLoginPage(self):
+        client = Client()
+
+        response = client.post("/login", {"useremail" : "notregisteredemail@gmail.com", "userpassword" : "123456"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn("User does not exist", response.context["message"])
+
+        response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "assumewrongpassword"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertIn("Invalid Credentials.", response.context["message"])
+
+        response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTrue(client.session["isLoggedIn"])
+        self.assertTrue(client.session["isDoctor"])
+        self.assertEqual(client.session["userEmail"], emailHasher("abcdefgh@gmail.com"))
+        self.assertEqual(client.session["Name"], "Abcd Efgh")
+        self.assertEqual(client.session["numberNewPrescriptions"], 1)
+
+    def testGetDoctorLoginProfilePageWithSessionInfo(self):
+        client = Client()
+
+        client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        response = client.get("/login")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTrue(client.session["isLoggedIn"])
+        self.assertTrue(client.session["isDoctor"])
+        self.assertEqual(client.session["userEmail"], emailHasher("abcdefgh@gmail.com"))
+        self.assertEqual(client.session["Name"], "Abcd Efgh")
+        self.assertEqual(client.session["numberNewPrescriptions"], 1)
+        for prescription in response.context["user"]:
+            self.assertEqual(prescription.doctor.email, "abcdefgh@gmail.com")
