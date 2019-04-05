@@ -93,6 +93,28 @@ IITJ Health Centre
 
           <br>
 
+        {% else %}
+          <div class="card text-center" style = "margin-left:5%;margin-right:5%;">
+
+              <div class="card-header">
+                  Completed Prescription of Patient
+              </div>
+
+              <div class="card-body">
+                  <h1 class="card-title" > {{ prescription.patient.name }} </h1>
+                  <p class="card-text lead" style=""><br>{{ prescription.prescriptionText }}<br><br> <span><h3>Patient's Symptoms</h3></span> {{ prescription.symptoms }}</p>
+                  <a href="#" class="btn btn-primary"style = "margin-top:1%">Contact Number : {{ prescription.patient.contactNumber }}</a>
+                  <a href="#" class="btn btn-primary"style = "margin-top:1%">Email : {{ prescription.patient.email }}</a>
+                  <a href="#" class="btn btn-primary"style = "margin-top:1%">Address : {{ prescription.patient.address }}</a>
+              </div>
+
+              <div class="card-footer text-muted">
+                  {{ prescription.timestamp }}
+              </div>
+
+          </div>
+
+          <br>
         {% endif %}
 
     {% empty %}
