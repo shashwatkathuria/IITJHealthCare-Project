@@ -368,3 +368,31 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
         for prescription in response.context["user"]:
             self.assertEqual(prescription.patient.email, "12345@gmail.com")
+
+    def testDoctorLogoutPage(self):
+        client = Client()
+
+        client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        client.get("/login")
+        response = client.get("/logout")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertEqual(client.session["isDoctor"], "")
+        self.assertFalse(client.session["isLoggedIn"])
+        self.assertEqual(client.session["userEmail"], "")
+        self.assertEqual(client.session["Name"], "")
+        self.assertEqual(client.session["numberNewPrescriptions"], "")
+
+    def testPatientLogoutPage(self):
+        client = Client()
+
+        client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
+        client.get("/login")
+        response = client.get("/logout")
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertEqual(client.session["isDoctor"], "")
+        self.assertFalse(client.session["isLoggedIn"])
+        self.assertEqual(client.session["userEmail"], "")
+        self.assertEqual(client.session["Name"], "")
+        self.assertEqual(client.session["numberNewPrescriptions"], "")
