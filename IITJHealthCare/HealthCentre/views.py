@@ -347,16 +347,11 @@ def emergency(request):
 def logout(request):
     """Function to log out the user."""
     # Erasing all the information of the session variables if user is logged out
-    request.session['isDoctor'] = False
+    request.session['isDoctor'] = ""
     request.session['isLoggedIn'] = False
     request.session['userEmail'] = ""
     request.session['Name'] = ""
-    request.session['numberNewPrescriptions'] = 0
-
-    # Storing message inside context variable
-    context = {
-        "message":"Successfully Logged Out."
-    }
+    request.session['numberNewPrescriptions'] = ""
 
     # Redirecting to avoid form resubmission
     # Redirecting to home page
@@ -487,7 +482,6 @@ def onlineprescription(request):
         # Editing response headers so as to ignore cached versions of pages
         response = render(request, "HealthCentre/prescriptionPortal.html")
         return responseHeadersModifier(response)
-
 
 def responseHeadersModifier(response):
     """Funtion to edit response headers so that no cached versions can be viewed. Returns the modified response."""
