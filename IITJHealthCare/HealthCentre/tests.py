@@ -203,6 +203,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/index.html', 'HealthCentre/layout.html')
 
     def testValidContactUsPage(self):
         client = Client()
@@ -210,6 +211,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/contactus")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/contactus.html', 'HealthCentre/layout.html')
 
     def testValidDoctorsPage(self):
         client = Client()
@@ -217,6 +219,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/doctors")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/doctors.html', 'HealthCentre/layout.html')
 
         self.assertEqual(response.context["doctors"].count(), 2)
 
@@ -226,6 +229,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/emergency")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
 
     def testPostEmergencyPage(self):
         client = Client()
@@ -234,11 +238,13 @@ class ClientsInteractionTestCase(TestCase):
         response = client.post("/emergency", {'emergencyLocation':'XYZ Location'})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
         self.assertIn('XYZ Location', response.context['message'])
 
         response = client.post("/emergency", {'emergencyLocation':''})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
         self.assertIn('Invalid input', response.context['message'])
 
     def testGetRegisterPage(self):
@@ -247,6 +253,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/register")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
 
     def testPostRegisterPage(self):
         client = Client()
@@ -254,11 +261,13 @@ class ClientsInteractionTestCase(TestCase):
         response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "12345"})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
         self.assertIn("Registration Successful", response.context["message"])
 
         response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "123456"})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
         self.assertIn("Passwords do not match", response.context["message"])
 
     def testGetLoginPageWithNoSessionInfo(self):
@@ -266,6 +275,7 @@ class ClientsInteractionTestCase(TestCase):
 
         response = client.get("/login")
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
         self.assertTrue(checkResponseHeaders(response))
 
     def testPostDoctorLoginPage(self):
@@ -274,11 +284,13 @@ class ClientsInteractionTestCase(TestCase):
         response = client.post("/login", {"useremail" : "notregisteredemail@gmail.com", "userpassword" : "123456"})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
         self.assertIn("User does not exist", response.context["message"])
 
         response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "assumewrongpassword"})
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
         self.assertIn("Invalid Credentials.", response.context["message"])
 
         response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
@@ -297,6 +309,7 @@ class ClientsInteractionTestCase(TestCase):
         response = client.get("/login")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/userDoctorProfilePortal.html', 'HealthCentre/layout.html')
         self.assertTrue(client.session["isLoggedIn"])
         self.assertTrue(client.session["isDoctor"])
         self.assertEqual(client.session["userEmail"], emailHasher("abcdefgh@gmail.com"))
@@ -304,3 +317,54 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
         for prescription in response.context["user"]:
             self.assertEqual(prescription.doctor.email, "abcdefgh@gmail.com")
+
+    def testPostPatientLoginPage(self):
+        client = Client()
+
+        response = client.post("/login", {"useremail" : "notregisteredemail@gmail.com", "userpassword" : "123456"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        self.assertIn("User does not exist", response.context["message"])
+
+        response = client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "assumewrongpassword"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        self.assertIn("Invalid Credentials.", response.context["message"])
+
+        prescription1 = Prescription.objects.get(patient = Patient.objects.get(email = "12345@gmail.com"))
+        prescription1.prescriptionText = "XYZ Advice..Precription Complete"
+        prescription1.isCompleted = True
+        prescription1.save()
+
+        response = client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTrue(client.session["isLoggedIn"])
+        self.assertFalse(client.session["isDoctor"])
+        self.assertEqual(client.session["userEmail"], emailHasher("12345@gmail.com"))
+        self.assertEqual(client.session["Name"], "Abcd Efgh")
+        self.assertEqual(client.session["numberNewPrescriptions"], 1)
+
+    def testGetPatientLoginProfilePageWithSessionInfo(self):
+        client = Client()
+
+        client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
+
+        prescription1 = Prescription.objects.get(patient = Patient.objects.get(email = "12345@gmail.com"))
+        prescription1.prescriptionText = "XYZ Advice..Precription Complete"
+        prescription1.isCompleted = True
+        prescription1.save()
+
+        response = client.get("/login")
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'HealthCentre/userPatientProfilePortal.html', 'HealthCentre/layout.html')
+        self.assertTrue(client.session["isLoggedIn"])
+        self.assertFalse(client.session["isDoctor"])
+        self.assertEqual(client.session["userEmail"], emailHasher("12345@gmail.com"))
+        self.assertEqual(client.session["Name"], "Abcd Efgh")
+        self.assertEqual(client.session["numberNewPrescriptions"], 1)
+        for prescription in response.context["user"]:
+            self.assertEqual(prescription.patient.email, "12345@gmail.com")
