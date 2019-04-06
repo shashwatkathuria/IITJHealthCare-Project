@@ -25,7 +25,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
         {% if request.session.isLoggedIn %}
-            <a class="navbar-brand" href="/"><h3 style="color:black;text-align:center">Hi, {{ request.session.Name }}</h3></a>
+            <a class="navbar-brand" href="/"><h3 style="color:black;text-align:center">Hi,{% if request.session.isDoctor %} Dr.{% endif %} {{ request.session.Name }}</h3></a>
         {% else %}
             <a class="navbar-brand" href="/"><h2 style="color:black;text-align:center">IIT Jodhpur Health Centre</h2></a>
         {% endif %}
@@ -82,8 +82,9 @@
 
             </ul>
 
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search Medicine" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" method="post" action="{% url 'MedicalStore:search' %}">
+              {% csrf_token %}
+                <input name = "searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search Medicine" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
 
