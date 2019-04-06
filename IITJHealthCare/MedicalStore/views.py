@@ -8,7 +8,7 @@ from .models import Medicine
 
 def index(request):
     medicines = Medicine.objects.all()
-    
+
     context = {
         "medicines" : medicines.order_by('name')
     }
@@ -18,3 +18,33 @@ def index(request):
     response["Pragma"] = "no-cache"
     response["Expires"] = "0"
     return response
+
+def search(request):
+    if request.method == "POST":
+        searchQuery = request.POST["searchQuery"]
+
+        searchFilteredMedicines = Medicine.objects.filter(name__contains = searchQuery)
+
+        context = {
+            "medicines" : searchFilteredMedicines.order_by('name')
+        }
+
+        response = render(request, "MedicalStore/medicines.html", context)
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return response
+
+    elif request.method == "GET":
+        response = render(request, "MedicalStore/medicines.html", context)
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return HttpResponseRedirect(reverse('MedicalStore:index'))
+
+    else:
+        response = render(request, "MedicalStore/medicines.html", context)
+        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response["Pragma"] = "no-cache"
+        response["Expires"] = "0"
+        return HttpResponseRedirect(reverse('MedicalStore:index'))
