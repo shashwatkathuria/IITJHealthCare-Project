@@ -61,14 +61,31 @@ class ClientWebInteraction(TestCase):
 
     def setUp(self):
 
-        m1 = Medicine.objects.create(name = "AA", company = "BB", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365), quantity = 10, price = 100, photoId = "m00.jpg" )
-        m2 = Medicine.objects.create(name = "CC", company = "DD", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), quantity = 50, price = 40, photoId = "m01.jpg" )
-        m3 = Medicine.objects.create(name = "EE", company = "FF", manufacturedDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), expiryDate = datetime.datetime.now() - datetime.timedelta(days = 365 * 2), quantity = 60, price = 70, photoId = "m02.jpg" )
+        m1 = Medicine.objects.create(name = "abcdef", company = "BB", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365), quantity = 10, price = 100, photoId = "m00.jpg" )
+        m2 = Medicine.objects.create(name = "defghi", company = "DD", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), quantity = 50, price = 40, photoId = "m01.jpg" )
+        m3 = Medicine.objects.create(name = "wxyzpqrs", company = "FF", manufacturedDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), expiryDate = datetime.datetime.now() - datetime.timedelta(days = 365 * 2), quantity = 60, price = 70, photoId = "m02.jpg" )
 
     def testIndexPage(self):
         client = Client()
 
         response = client.get(reverse('MedicalStore:index'))
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
+
+    def testPostSearchPage(self):
+        client = Client()
+
+        response = client.post(reverse('MedicalStore:search'), {'searchQuery' : 'ef'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
+        self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
+        for medicine in response.context['medicines']:
+            self.assertIn('ef', medicine.name)
+
+    def testGetSearchPage(self):
+        client = Client()
+
+        response = client.get(reverse('MedicalStore:search'))
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(checkResponseHeaders(response))
