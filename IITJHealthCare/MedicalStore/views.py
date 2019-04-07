@@ -14,10 +14,7 @@ def index(request):
     }
 
     response = render(request, "MedicalStore/medicines.html", context)
-    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response["Pragma"] = "no-cache"
-    response["Expires"] = "0"
-    return response
+    return responseHeadersModifier(response)
 
 def search(request):
     if request.method == "POST":
@@ -30,21 +27,19 @@ def search(request):
         }
 
         response = render(request, "MedicalStore/medicines.html", context)
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return response
+        return responseHeadersModifier(response)
 
     elif request.method == "GET":
-        response = render(request, "MedicalStore/medicines.html", context)
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return HttpResponseRedirect(reverse('MedicalStore:index'))
+        response = HttpResponseRedirect(reverse('MedicalStore:index'))
+        return responseHeadersModifier(response)
 
     else:
-        response = render(request, "MedicalStore/medicines.html", context)
-        response["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response["Pragma"] = "no-cache"
-        response["Expires"] = "0"
-        return HttpResponseRedirect(reverse('MedicalStore:index'))
+        response = HttpResponseRedirect(reverse('MedicalStore:index'))
+        return responseHeadersModifier(response)
+
+def responseHeadersModifier(response):
+    """Funtion to edit response headers so that no cached versions can be viewed. Returns the modified response."""
+    response["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response["Pragma"] = "no-cache"
+    response["Expires"] = "0"
+    return response
