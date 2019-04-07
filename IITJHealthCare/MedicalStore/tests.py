@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import Client, TestCase
+from django.urls import reverse
 from .models import Medicine
 import datetime
 
@@ -52,3 +53,18 @@ class MedicinesTestCase(TestCase):
         for medicine in medicines:
             format = medicine.photoId.split(".")[1]
             self.assertTrue(format in validFormats)
+
+class ClientWebInteraction(TestCase):
+
+    def setUp(self):
+
+        m1 = Medicine.objects.create(name = "AA", company = "BB", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365), quantity = 10, price = 100, photoId = "m00.jpg" )
+        m2 = Medicine.objects.create(name = "CC", company = "DD", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), quantity = 50, price = 40, photoId = "m01.jpg" )
+        m3 = Medicine.objects.create(name = "EE", company = "FF", manufacturedDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), expiryDate = datetime.datetime.now() - datetime.timedelta(days = 365 * 2), quantity = 60, price = 70, photoId = "m02.jpg" )
+
+    def testIndexPage(self):
+        client = Client()
+
+        response = client.get(reverse('MedicalStore:index'))
+        self.assertTrue(response.status_code, 200)
+        self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
