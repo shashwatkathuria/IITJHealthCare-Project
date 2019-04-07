@@ -54,6 +54,9 @@ class MedicinesTestCase(TestCase):
             format = medicine.photoId.split(".")[1]
             self.assertTrue(format in validFormats)
 
+def checkResponseHeaders(response):
+    return response["Cache-Control"] == "no-cache, no-store, must-revalidate" and response["Pragma"] == "no-cache" and response["Expires"] == "0"
+
 class ClientWebInteraction(TestCase):
 
     def setUp(self):
@@ -67,4 +70,5 @@ class ClientWebInteraction(TestCase):
 
         response = client.get(reverse('MedicalStore:index'))
         self.assertTrue(response.status_code, 200)
+        self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
