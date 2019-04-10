@@ -88,7 +88,10 @@ class DoctorsTestCase(TestCase):
 class PatientsTestCase(TestCase):
 
     def setUp(self):
+        """Function to initialize objects and things required during testing the
+            methods of this class."""
 
+        # Setting up test patient instances and storing in test database
         email = "12345@gmail.com"
         passwordHash = passwordHasher("abcdefgh")
         emailHash = emailHasher(email)
@@ -100,42 +103,70 @@ class PatientsTestCase(TestCase):
         p2 = Patient.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", rollNumber = "B17CS102", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
     def testPatientCount(self):
+        """Function to check the correct number of patients stored in database."""
+
+        # Getting all the patients and then asserting their correct count
         patients = Patient.objects.all()
         self.assertEqual(patients.count(), 2)
 
-    def testpatientDetails(self):
+    def testPatientDetails(self):
+        """Function to check the if patient details stored in database are correct."""
+
+        # Getting all the patients available from database
         patients = Patient.objects.all()
 
+        # Confirming the details of the first patient inserted as in setUp() method
         p1 = patients[0]
         emailHash = emailHasher(p1.email)
         passwordHash = passwordHasher("abcdefgh")
         self.assertTrue(p1.name == "Abcd Efgh" and p1.address == "Aaaa, Bbbbb, 110011" and p1.contactNumber == "8888888888" and p1.rollNumber == "B17CS101" and p1.email == "12345@gmail.com" and p1.passwordHash == passwordHash and p1.emailHash == emailHash)
 
+        # Confirming the details of the second patient inserted as in setUp() method
         p2 = patients[1]
         emailHash = emailHasher(p2.email)
         passwordHash = passwordHasher("ijklmnop")
         self.assertTrue(p2.name == "Ijkl Mnop" and p2.address == "Cccc, Dddd, 001100" and p2.contactNumber == "9999999999" and p2.rollNumber == "B17CS102" and p2.email == "67890@gmail.com" and p2.passwordHash == passwordHash and p2.emailHash == emailHash)
 
     def testDuplicatePasswordHashes(self):
+        """Function to confirm that different passwords give different hashes. Otherwise hashing technique would be weak"""
+
+        # Getting all the patients from database
         patients = Patient.objects.all()
+
+        # List to store password hashes
         passwordHashes = []
+
+        # Appending password hashes to the list for each patient
         for patient in patients:
             passwordHashes.append(patient.passwordHash)
 
+        # Using set to merge duplicate password hashes and then using list to access
+        # the number of password hashes remaining after removing duplicates (if any)
         passwordHashes = set(passwordHashes)
         passwordHashes = list(passwordHashes)
 
+        # Asserting that the number of password hashes are still 2 if hashing technique is strong
         self.assertEqual(len(passwordHashes), 2)
 
     def testDuplicateEmailHashes(self):
+        """Function to confirm that different emails give different hashes. Otherwise hashing technique would be weak"""
+
+        # Getting all the patients from database
         patients = Patient.objects.all()
+
+        # List to store email hashes
         emailHashes = []
+
+        # Appending email hashes to the list for each patient
         for patient in patients:
             emailHashes.append(patient.emailHash)
 
+        # Using set to merge duplicate email hashes and then using list to access
+        # the number of email hashes remaining after removing duplicates (if any)
         emailHashes = set(emailHashes)
         emailHashes = list(emailHashes)
 
+        # Asserting that the number of password hashes are still 2 if hashing technique is strong
         self.assertEqual(len(emailHashes), 2)
 
 class PrescriptionsTestCase(TestCase):
