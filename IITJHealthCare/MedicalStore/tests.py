@@ -88,37 +88,54 @@ class MedicinesTestCase(TestCase):
             self.assertTrue(format in validFormats)
 
 def checkResponseHeaders(response):
+    """Function for checking if the response headers are modified as required."""
     return response["Cache-Control"] == "no-cache, no-store, must-revalidate" and response["Pragma"] == "no-cache" and response["Expires"] == "0"
 
 class ClientWebInteraction(TestCase):
 
     def setUp(self):
+        """Function to create and save medicines required for testing the web interaction."""
 
+        # Creating and saving medicines required for testing
+
+        # Medicines with correct entries
         m1 = Medicine.objects.create(name = "abcdef", company = "BB", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365), quantity = 10, price = 100, photoId = "m00.jpg" )
         m2 = Medicine.objects.create(name = "defghi", company = "DD", manufacturedDate = datetime.datetime.now(), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), quantity = 50, price = 40, photoId = "m01.jpg" )
-        m3 = Medicine.objects.create(name = "wxyzpqrs", company = "FF", manufacturedDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), expiryDate = datetime.datetime.now() - datetime.timedelta(days = 365 * 2), quantity = 60, price = 70, photoId = "m02.jpg" )
+        m3 = Medicine.objects.create(name = "wxyzpqrs", company = "FF", manufacturedDate = datetime.datetime.now() - datetime.timedelta(days = 365 * 2), expiryDate = datetime.datetime.now() + datetime.timedelta(days = 365 * 2), quantity = 60, price = 70, photoId = "m02.jpg" )
 
     def testIndexPage(self):
+        """Function for testing the index page."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get(reverse('MedicalStore:index'))
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
 
     def testPostSearchPage(self):
+        """Function for testing the search page by POST method."""
         client = Client()
 
+        # Requesting by POST method for page and passing in search query
         response = client.post(reverse('MedicalStore:search'), {'searchQuery' : 'ef'})
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'MedicalStore/medicines.html', 'MedicalStore/layout.html')
+
+        # Asserting the search query to be a substring of all the search results returned
         for medicine in response.context['medicines']:
             self.assertIn('ef', medicine.name)
 
     def testGetSearchPage(self):
+        """Function for testing the search page by GET method."""
         client = Client()
 
+        # Asserting correct status code, response headers and templates
         response = client.get(reverse('MedicalStore:search'))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(checkResponseHeaders(response))
