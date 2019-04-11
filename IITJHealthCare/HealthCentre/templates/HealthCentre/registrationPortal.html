@@ -4,6 +4,19 @@
 IITJ Health Centre
 {% endblock%}
 
+{% block script %}
+  function checkConfirm() {
+      if (document.getElementById("confirmCheck").checked === true)
+      {
+         return true;
+      }
+      else
+      {
+         alert('Please tick confirm.');
+         return false;
+      }
+  }
+{% endblock %}
 
 {% block bodytag %}
 
@@ -31,7 +44,7 @@ IITJ Health Centre
               <br>
           {% else %}
             <br>
-            <form align="center" action="{% url 'register' %}" method="post">
+            <form onsubmit="return checkConfirm()"align="center" action="{% url 'register' %}" method="post">
                 {% csrf_token %}
                   <div class="form-row ">
 
@@ -63,7 +76,7 @@ IITJ Health Centre
                   <div class="form-row">
 
                         <div class="col-6">
-                            <input name="userAddress"type="text" class="form-control" placeholder="Address">
+                            <input name="userAddress" type="text" class="form-control" placeholder="Address">
                         </div>
 
                         <div class="col-6">
@@ -91,7 +104,7 @@ IITJ Health Centre
                   <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
 
                   <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="confirmCheck">
                         <label class="form-check-label" for="exampleCheck1"><span class="badge badge-success">CONFIRM</span></label>
                   </div>
 

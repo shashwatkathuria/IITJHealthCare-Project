@@ -4,7 +4,19 @@
 IITJ Health Centre
 {% endblock%}
 
-
+{% block script %}
+  function checkConfirm() {
+      if (document.getElementById("confirmCheck").checked === true)
+      {
+         return true;
+      }
+      else
+      {
+         alert('Please tick confirm.');
+         return false;
+      }
+  }
+{% endblock %}
 {% block bodytag %}
 
     {% load static %}
@@ -38,7 +50,7 @@ IITJ Health Centre
 
           <div class="container center_div"style = "background:rgba(0,0,0,0.6);padding-top:2%;padding-bottom:2%" align ="center" width="300px">
 
-              <form align="center" action="{% url 'onlineprescription' %}" method="post">
+              <form onsubmit="return checkConfirm()" align="center" action="{% url 'onlineprescription' %}" method="post">
                 {% csrf_token %}
 
                 <div class="form-group" >
@@ -64,7 +76,7 @@ IITJ Health Centre
                 <li class="dropdown-divider" style="margin-left:25%;margin-right:25%"></li>
 
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" >
+                    <input type="checkbox" class="form-check-input" id="confirmCheck" >
                     <label class="form-check-label" ><span class="badge badge-success">CONFIRM</span></label>
                 </div>
 
