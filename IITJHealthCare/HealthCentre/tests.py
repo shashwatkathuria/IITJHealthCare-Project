@@ -172,7 +172,10 @@ class PatientsTestCase(TestCase):
 class PrescriptionsTestCase(TestCase):
 
     def setUp(self):
+        """Function to initialize objects and things required during testing the
+            methods of this class."""
 
+        # Setting up test doctor instances and storing in test database
         email = "abcdefgh@gmail.com"
         passwordHash = passwordHasher("12345")
         emailHash = emailHasher(email)
@@ -183,6 +186,7 @@ class PrescriptionsTestCase(TestCase):
         emailHash = emailHasher(email)
         d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", specialization = "EYE", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        # Setting up test patient instances and storing in test database
         email = "12345@gmail.com"
         passwordHash = passwordHasher("abcdefgh")
         emailHash = emailHasher(email)
@@ -193,6 +197,7 @@ class PrescriptionsTestCase(TestCase):
         emailHash = emailHasher(email)
         p2 = Patient.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", rollNumber = "B17CS102", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        # Setting up test prescription instances and storing in test database
         symptoms = "aaaaa bbbbb"
         prescription1 = Prescription.objects.create(doctor = d1, patient = p1, symptoms = symptoms)
 
@@ -200,22 +205,39 @@ class PrescriptionsTestCase(TestCase):
         prescription2 = Prescription.objects.create(doctor = d2, patient = p2, symptoms = symptoms)
 
     def testPrescriptionCount(self):
+        """Function to check the correct number of prescriptions stored in database."""
+
+        # Getting all the prescriptions and then asserting their correct count
         prescriptions = Prescription.objects.all()
         self.assertEqual(prescriptions.count(), 2)
 
     def testIncompletePrescription(self):
+        """Function to check the status of incomplete prescriptions. """
+
+        # Getting all the prescriptions
         prescriptions = Prescription.objects.all()
+
+        # Asserting all the prescriptions (which are incomplete)
+        # to be new and not completed
         for prescription in prescriptions:
             self.assertTrue(prescription.isNew)
             self.assertFalse(prescription.isCompleted)
 
     def testCompletePrescription(self):
+        """Function to check the status of incomplete prescriptions. """
+
+        # Getting all the prescriptions
         prescriptions = Prescription.objects.all()
+
+        # Completing all the prescriptions in the database as a doctor
+        # would, setting the isNew property false and isCompleted true,
+        # also setting their prescription text
         for prescription in prescriptions:
             prescription.prescriptionText = "Aaaaaa Bbbbbb Cccccc Dddddd"
             prescription.isNew = False
             prescription.isCompleted = True
 
+        # Asserting all the attributes of the completed prescriptions as required
         prescription1 = prescriptions[0]
         self.assertTrue(prescription1.doctor.id == Doctor.objects.get(email="abcdefgh@gmail.com").id and prescription1.patient.id == Patient.objects.get(email = "12345@gmail.com").id and prescription1.prescriptionText == "Aaaaaa Bbbbbb Cccccc Dddddd")
         self.assertTrue(prescription1.isCompleted)
@@ -227,6 +249,7 @@ class PrescriptionsTestCase(TestCase):
         self.assertFalse(prescription2.isNew)
 
 def checkResponseHeaders(response):
+    """Function for checking if the response headers are modified as required."""
     return response["Cache-Control"] == "no-cache, no-store, must-revalidate" and response["Pragma"] == "no-cache" and response["Expires"] == "0"
 
 class ClientsInteractionTestCase(TestCase):
