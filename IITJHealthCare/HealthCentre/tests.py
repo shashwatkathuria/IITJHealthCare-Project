@@ -255,7 +255,10 @@ def checkResponseHeaders(response):
 class ClientsInteractionTestCase(TestCase):
 
     def setUp(self):
+        """Function to initialize objects and things required during testing the
+            methods of this class."""
 
+        # Initializing the doctors required during testing and saving into database
         email = "abcdefgh@gmail.com"
         passwordHash = passwordHasher("12345")
         emailHash = emailHasher(email)
@@ -266,6 +269,7 @@ class ClientsInteractionTestCase(TestCase):
         emailHash = emailHasher(email)
         d2 = Doctor.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", specialization = "EYE", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        # Initializing the patients required during testing and saving into database
         email = "12345@gmail.com"
         passwordHash = passwordHasher("abcdefgh")
         emailHash = emailHasher(email)
@@ -276,6 +280,7 @@ class ClientsInteractionTestCase(TestCase):
         emailHash = emailHasher(email)
         p2 = Patient.objects.create(name = "Ijkl Mnop", address = "Cccc, Dddd, 001100", contactNumber = "9999999999", rollNumber = "B17CS102", email = email, passwordHash = passwordHash, emailHash = emailHash)
 
+        # Initializing the prescriptions required during testing and saving into database
         symptoms = "aaaaa bbbbb"
         prescription1 = Prescription.objects.create(doctor = d1, patient = p1, symptoms = symptoms)
 
@@ -283,104 +288,155 @@ class ClientsInteractionTestCase(TestCase):
         prescription2 = Prescription.objects.create(doctor = d2, patient = p2, symptoms = symptoms)
 
     def testValidIndexPage(self):
+        """Function for testing the index page."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/")
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/index.html', 'HealthCentre/layout.html')
 
     def testValidContactUsPage(self):
+        """Function for testing the contact us page."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/contactus")
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/contactus.html', 'HealthCentre/layout.html')
 
     def testValidDoctorsPage(self):
+        """Function for testing the doctors page."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/doctors")
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/doctors.html', 'HealthCentre/layout.html')
 
+        # Asserting correct count of doctors
         self.assertEqual(response.context["doctors"].count(), 2)
 
     def testGetEmergencyPage(self):
+        """Function for testing the emergency page by GET method."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/emergency")
+
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
 
     def testPostEmergencyPage(self):
+        """Function for testing the emergency page by POST method."""
         client = Client()
 
-        print("\n Testing...Emergency Message to be displayed on screen if everything works correctly.\n")
+        # Mentioning the print statements to be outputted by the view method
+        print("\n=============================")
+        print("\n Testing...Emergency Message(for testing POST method of emergency page) to be displayed on screen if everything works correctly.\n")
+
+        # Requesting by POST method for page with correct(not blank) location
         response = client.post("/emergency", {'emergencyLocation':'XYZ Location'})
+        print("=============================\n")
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
+        # Asserting the correct location in the message
         self.assertIn('XYZ Location', response.context['message'])
 
+        # Requesting by POST method for page with incorrect(blank) location
         response = client.post("/emergency", {'emergencyLocation':''})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/emergencyPortal.html', 'HealthCentre/layout.html')
+        # Asserting the invalid input location in the message
         self.assertIn('Invalid input', response.context['message'])
 
     def testGetRegisterPage(self):
+        """Function for testing the register page by GET method."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/register")
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
 
     def testPostRegisterPage(self):
+        """Function for testing the register page by POST method."""
         client = Client()
 
+        # Requesting by POST method for page with correct input(matching passwords)
         response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "12345"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
+        # Asserting successful registration in the message
         self.assertIn("Registration Successful", response.context["message"])
 
+        # Requesting by POST method for page with incorrect input(passwords not matching)
         response = client.post("/register", {"userFirstName" : "AA", "userLastName" : "BB", "userEmail" : "abcd@gmail.com", "userRollNo" : "B99CS099", "userAddress" : "CC, DD", "userContactNo" : "9999999999", "userPassword" : "12345", "userConfirmPassword" : "123456"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/registrationPortal.html', 'HealthCentre/layout.html')
+        # Asserting failure of registration(passwords do not match) in the message
         self.assertIn("Passwords do not match", response.context["message"])
 
     def testGetLoginPageWithNoSessionInfo(self):
+        """Function for testing the login page by GET method."""
         client = Client()
 
+        # Requesting by GET method for page
         response = client.get("/login")
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
         self.assertTrue(checkResponseHeaders(response))
 
     def testPostDoctorLoginPage(self):
+        """Function for testing the login page by POST method for doctors."""
         client = Client()
 
+        # Requesting by POST method for page with a user not existing in the database
         response = client.post("/login", {"useremail" : "notregisteredemail@gmail.com", "userpassword" : "123456"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        # Asserting user does not exist in the message
         self.assertIn("User does not exist", response.context["message"])
 
+        # Requesting by POST method for page with incorrect password
         response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "assumewrongpassword"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        # Asserting invalid credentials in the message
         self.assertIn("Invalid Credentials.", response.context["message"])
 
+        # Requesting by POST method for page with correct password
         response = client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        # Asserting correct status code(of redirecting to other page) and response headers
         self.assertEqual(response.status_code, 302)
         self.assertTrue(checkResponseHeaders(response))
+        # Asserting correct variable values in the session
         self.assertTrue(client.session["isLoggedIn"])
         self.assertTrue(client.session["isDoctor"])
         self.assertEqual(client.session["userEmail"], emailHasher("abcdefgh@gmail.com"))
@@ -388,44 +444,62 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
 
     def testGetDoctorLoginProfilePageWithSessionInfo(self):
+        """Function for testing the login page once a doctor is already logged in previously
+           and now a session is used to log him/her in with asking for credentials."""
         client = Client()
 
+        # Logging in once with correct credentials by the POST method for the page
         client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        # Requesting by GET method for login page after being logged in once already
         response = client.get("/login")
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/userDoctorProfilePortal.html', 'HealthCentre/layout.html')
+        # Asserting correct variable values in the session
         self.assertTrue(client.session["isLoggedIn"])
         self.assertTrue(client.session["isDoctor"])
         self.assertEqual(client.session["userEmail"], emailHasher("abcdefgh@gmail.com"))
         self.assertEqual(client.session["Name"], "Abcd Efgh")
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
+        # Checking the prescriptions in the doctor's history to ensure it is his account
         for prescription in response.context["user"]:
             self.assertEqual(prescription.doctor.email, "abcdefgh@gmail.com")
 
     def testPostPatientLoginPage(self):
+        """Function for testing the login page by POST method for patients."""
         client = Client()
 
+        # Requesting by POST method for page with a user not existing in the database
         response = client.post("/login", {"useremail" : "notregisteredemail@gmail.com", "userpassword" : "123456"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        # Asserting user does not exist in the message
         self.assertIn("User does not exist", response.context["message"])
 
+        # Requesting by POST method for page with incorrect password
         response = client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "assumewrongpassword"})
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/loginPortal.html', 'HealthCentre/layout.html')
+        # Asserting invalid credentials in the message
         self.assertIn("Invalid Credentials.", response.context["message"])
 
+        # Completing the prescription in setUp() for checking patient history
         prescription1 = Prescription.objects.get(patient = Patient.objects.get(email = "12345@gmail.com"))
         prescription1.prescriptionText = "XYZ Advice..Precription Complete"
         prescription1.isCompleted = True
         prescription1.save()
 
+        # Requesting by POST method for page with correct password
         response = client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
+        # Asserting correct status code(of redirecting to other page) and response headers
         self.assertEqual(response.status_code, 302)
         self.assertTrue(checkResponseHeaders(response))
+        # Asserting correct variable values in the session
         self.assertTrue(client.session["isLoggedIn"])
         self.assertFalse(client.session["isDoctor"])
         self.assertEqual(client.session["userEmail"], emailHasher("12345@gmail.com"))
@@ -433,35 +507,49 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
 
     def testGetPatientLoginProfilePageWithSessionInfo(self):
+        """Function for testing the login page once a patient is already logged in previously
+           and now a session is used to log him/her in with asking for credentials."""
         client = Client()
 
+        # Logging in once with correct credentials by the POST method for the page
         client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
 
+        # Completing the prescription in setUp() for checking patient history
         prescription1 = Prescription.objects.get(patient = Patient.objects.get(email = "12345@gmail.com"))
         prescription1.prescriptionText = "XYZ Advice..Precription Complete"
         prescription1.isCompleted = True
         prescription1.save()
 
+        # Requesting by GET method for login page after being logged in once already
         response = client.get("/login")
+        # Asserting correct status code, response headers and templates
         self.assertEqual(response.status_code, 200)
         self.assertTrue(checkResponseHeaders(response))
         self.assertTemplateUsed(response, 'HealthCentre/userPatientProfilePortal.html', 'HealthCentre/layout.html')
+        # Asserting correct variable values in the session
         self.assertTrue(client.session["isLoggedIn"])
         self.assertFalse(client.session["isDoctor"])
         self.assertEqual(client.session["userEmail"], emailHasher("12345@gmail.com"))
         self.assertEqual(client.session["Name"], "Abcd Efgh")
         self.assertEqual(client.session["numberNewPrescriptions"], 1)
+        # Checking the prescriptions in the patient's history to ensure it is his account
         for prescription in response.context["user"]:
             self.assertEqual(prescription.patient.email, "12345@gmail.com")
 
     def testDoctorLogoutPage(self):
+        """Function for testing the logout page for doctors."""
         client = Client()
 
+        # Logging in once with correct credentials by the POST method for the login page
         client.post("/login", {"useremail" : "abcdefgh@gmail.com", "userpassword" : "12345"})
+        # Using session to login again
         client.get("/login")
+        # Requesting by POST method for logout page after being logged in once already
         response = client.get("/logout")
+        # Asserting correct status code(of redirecting to other page) and response headers
         self.assertEqual(response.status_code, 302)
         self.assertTrue(checkResponseHeaders(response))
+        # Asserting correct variable values in the session once logged out(all should be blank to convey no meaning)
         self.assertEqual(client.session["isDoctor"], "")
         self.assertFalse(client.session["isLoggedIn"])
         self.assertEqual(client.session["userEmail"], "")
@@ -469,13 +557,19 @@ class ClientsInteractionTestCase(TestCase):
         self.assertEqual(client.session["numberNewPrescriptions"], "")
 
     def testPatientLogoutPage(self):
+        """Function for testing the logout page for patients."""
         client = Client()
 
+        # Logging in once with correct credentials by the POST method for the login page
         client.post("/login", {"useremail" : "12345@gmail.com", "userpassword" : "abcdefgh"})
+        # Using session to login again
         client.get("/login")
+        # Requesting by POST method for logout page after being logged in once already
         response = client.get("/logout")
+        # Asserting correct status code(of redirecting to other page) and response headers
         self.assertEqual(response.status_code, 302)
         self.assertTrue(checkResponseHeaders(response))
+        # Asserting correct variable values in the session once logged out(all should be blank to convey no meaning)
         self.assertEqual(client.session["isDoctor"], "")
         self.assertFalse(client.session["isLoggedIn"])
         self.assertEqual(client.session["userEmail"], "")
