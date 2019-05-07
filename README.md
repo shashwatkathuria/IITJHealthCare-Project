@@ -12,7 +12,7 @@ SOFTWARE ENGINEERING PARADIGMS
 ----------------------------
 
 The various aspects of software engineering applied to this project can be found
-in 'Pitch.pdf'.
+in 'ProjectPresentation.pdf'.
 
 ----------------------------
 TECHNOLOGIES USED
