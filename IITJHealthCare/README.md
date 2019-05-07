@@ -1,4 +1,4 @@
-# HealthCare
+# Health Centre
 --------------
 
 This folder contains the Health Centre application of the django project which includes online prescriptions, patients and doctors and other related information.
