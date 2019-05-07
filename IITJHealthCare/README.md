@@ -4,7 +4,7 @@
 This folder contains the Health Centre application of the django project which includes online prescriptions, patients and doctors and other related information.
 
 --------------
-#Medical Store
+# Medical Store
 --------------
 
 This folder contains the Medical Store application which include the details regarding medicines available in the medical store. 
