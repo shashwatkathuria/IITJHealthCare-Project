@@ -12,11 +12,7 @@
 
         <title>{% block title %}{% endblock %}</title>
         <style>{% block style %}{% endblock %}</style>
-        <script>
-        if ( window.history.replaceState ) {
-          window.history.replaceState( null, null, window.location.href );
-        }
-        </script>
+        <script src="{% static 'HealthCentre/javascript/windowHistory.js' %}"></script>
 
     </head>
 
