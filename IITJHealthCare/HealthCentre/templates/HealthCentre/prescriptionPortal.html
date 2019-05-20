@@ -1,22 +1,13 @@
 {% extends "HealthCentre/layout.html" %}
-
+{% load static %}
 {% block title %}
 IITJ Health Centre
 {% endblock%}
 
 {% block script %}
-  function checkConfirm() {
-      if (document.getElementById("confirmCheck").checked === true)
-      {
-         return true;
-      }
-      else
-      {
-         alert('Please tick confirm.');
-         return false;
-      }
-  }
+    <script src="{% static 'HealthCentre/javascript/checkboxConfirm.js' %}"></script>
 {% endblock %}
+
 {% block bodytag %}
 
     {% load static %}
