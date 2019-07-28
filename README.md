@@ -1,4 +1,4 @@
-# IITJ Health Care ![Status active](https://img.shields.io/badge/Status-active%20development-2eb3c1.svg) ![Django 2.1.5](https://img.shields.io/badge/Django-2.1.5-green.svg) ![Python 3.6](https://img.shields.io/badge/Python-3.6-blue.svg) ![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)
+# IITJ Health Care ![Status finished](https://img.shields.io/badge/Status-finished-2eb3c1.svg) ![Django 2.1.5](https://img.shields.io/badge/Django-2.1.5-green.svg) ![Python 3.6.8](https://img.shields.io/badge/Python-3.6.8-blue.svg) ![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)
 ----------------------------
 ABOUT THE PROJECT
 ----------------------------
@@ -18,8 +18,8 @@ in 'ProjectPresentation.pdf'.
 TECHNOLOGIES USED
 ----------------------------
 
-- Python 3.6
-- Django 2.1
+- Python 3.6.8
+- Django 2.1.5
 - SQLLite
 - Bootstrap ( HTML / CSS / Javascript )
 
@@ -28,11 +28,11 @@ INSTRUCTIONS TO RUN THE PROJECT
 ----------------------------
 
 Type the following commands in sequential order:
-    
+
               source env/bin/activate      (To activate virtual environment)
               cd IITJHealthCare
               python3 manage.py runserver  
-              
+
 To deactivate the virtual environment:
 
               deactivate               
