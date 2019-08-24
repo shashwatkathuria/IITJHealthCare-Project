@@ -97,6 +97,9 @@ def doctors(request):
 def login(request):
     """ Function for logging in the user. """
 
+    # Calling session variables checker
+    request = requestSessionInitializedChecker(request)
+
     # If the request method is post
     if request.method == "GET":
         try:
@@ -369,6 +372,9 @@ def contactus(request):
 def onlineprescription(request):
     """Function to submit online prescription request to doctor."""
 
+    # Calling session variables checker
+    request = requestSessionInitializedChecker(request)
+
     # If the request method is get
     if request.method == "GET":
 
@@ -489,3 +495,23 @@ def responseHeadersModifier(response):
     response["Pragma"] = "no-cache"
     response["Expires"] = "0"
     return response
+
+def requestSessionInitializedChecker(request):
+    """Function to initialize request sessions if they don't exist."""
+
+    # Try except for KeyError
+    try:
+        # Checking if session variables exist
+        if request.session['isDoctor'] and request.session['isLoggedIn'] and request.session['userEmail'] and request.session['Name'] and request.session['numberNewPrescriptions']:
+            # Do nothing if they do exist
+            pass
+    except:
+        # Initialize request variables if they don't exist
+        request.session['isDoctor'] = ""
+        request.session['isLoggedIn'] = False
+        request.session['userEmail'] = ""
+        request.session['Name'] = ""
+        request.session['numberNewPrescriptions'] = ""
+
+    # Returning request
+    return request
