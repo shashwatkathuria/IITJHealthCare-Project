@@ -37,4 +37,20 @@ To deactivate the virtual environment:
 
               deactivate               
 
+Following are the users for the project:
+
+Patients(Can be registered through website register route):
+
+- email : sk@iitj.ac.in         password : shashwat
+- email : mm@iitj.ac.in         password : mayank
+- email : mk@iitj.ac.in         password : manish
+- email : sm@iitj.ac.in         password : shreyas
+
+Doctors(Can be registered only through superuser):
+
+- email : rpgoyal@iitj.ac.in    password : rpgoyal@iitj.ac.in
+- email : nksingh@iitj.ac.in    password : nksingh@iitj.ac.in
+- email : kumar.5@iitj.ac.in    password : kumar.5@iitj.ac.in
+- email : sharma.1@iitj.ac.in   password : sharma.1@iitj.ac.in
+
 ----------------------------
