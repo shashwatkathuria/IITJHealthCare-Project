@@ -1,4 +1,4 @@
-# IITJ Health Care [![Deployed](https://img.shields.io/badge/Hosted_on-Azure-blue?logo=windows)](http://iitjhealthcaresk17.azurewebsites.net/) ![Status finished](https://img.shields.io/badge/Status-finished-2eb3c1.svg) ![Django 5.2](https://img.shields.io/badge/Django-5.2-green.svg) ![Python 3.10.2](https://img.shields.io/badge/Python-3.10.2-blue.svg) ![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)
+# IITJ Health Care [![Deployed](https://img.shields.io/badge/Hosted_on-Azure-blue?logo=windows)](https://iitjhealthcaresk17.azurewebsites.net/) ![Status finished](https://img.shields.io/badge/Status-finished-2eb3c1.svg) ![Django 5.2](https://img.shields.io/badge/Django-5.2-green.svg) ![Python 3.10.2](https://img.shields.io/badge/Python-3.10.2-blue.svg) ![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)
 ----------------------------
 ABOUT THE PROJECT
 ----------------------------
@@ -7,7 +7,7 @@ The students can get online prescriptions from doctors, request ambulance in
 emergency situations and get information about the medicines available in the
 Medical Store.
 
-🚀 **Hosted at:** [http://iitjhealthcaresk17.azurewebsites.net/](http://iitjhealthcaresk17.azurewebsites.net/)
+🚀 **Hosted at:** [https://iitjhealthcaresk17.azurewebsites.net/](https://iitjhealthcaresk17.azurewebsites.net/)
 
 ----------------------------
 SOFTWARE ENGINEERING PARADIGMS
