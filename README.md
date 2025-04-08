@@ -32,6 +32,7 @@ INSTRUCTIONS TO RUN THE PROJECT
 Type the following commands in sequential order:
 
               python3 -m venv venv      (To create virtual environment)
+              source venv/bin/activate  (To activate virtual environment)
               pip install -r requirements.txt
               python3 manage.py migrate
               python3 manage.py runserver  
