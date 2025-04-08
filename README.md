@@ -30,7 +30,7 @@ INSTRUCTIONS TO RUN THE PROJECT
 Type the following commands in sequential order:
 
               python3 -m venv venv      (To create virtual environment)
-              pip install requirements.txt
+              pip install -r requirements.txt
               cd IITJHealthCare
               python3 manage.py migrate
               python3 manage.py runserver  
