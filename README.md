@@ -18,8 +18,8 @@ in 'ProjectPresentation.pdf'.
 TECHNOLOGIES USED
 ----------------------------
 
-- Python 3.6.8
-- Django 2.1.5
+- Python 3.10.2
+- Django 5.2
 - SQLLite
 - Bootstrap ( HTML / CSS / Javascript )
 
@@ -29,8 +29,10 @@ INSTRUCTIONS TO RUN THE PROJECT
 
 Type the following commands in sequential order:
 
-              source env/bin/activate      (To activate virtual environment)
+              python3 -m venv venv      (To create virtual environment)
+              pip install requirements.txt
               cd IITJHealthCare
+              python3 manage.py migrate
               python3 manage.py runserver  
 
 To deactivate the virtual environment:
